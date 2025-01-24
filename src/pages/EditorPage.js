@@ -5,6 +5,7 @@ import Scene from "../components/Scene";
 import CircleButton from "../components/CircleButton";
 
 const EditorPage = () => {
+    // State to manage model settings such as scaling
     const [modelSettings, setModelSettings] = useState({
         scaleX: 1,
         scaleY: 1,
@@ -13,32 +14,31 @@ const EditorPage = () => {
 
     return (
         <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-            {/* Circle Button */}
+            {/* Circle Button: Used to select a model */}
             <CircleButton
                 onModelSelect={(modelName) => {
                     console.log("Selected Model:", modelName);
-                    // Seçilen modeli işleyip Scene'e aktarabilirsiniz
+                    // You can process the selected model and pass it to the Scene component
                 }}
             />
-
 
             {/* Centered 3D Model Scene */}
             <Box
                 sx={{
-                    flex: 1,
+                    flex: 1, // Takes up remaining space
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginRight: "250px", // Leave space for sidebar
+                    marginRight: "250px", // Space for the sidebar
                 }}
             >
                 <Scene modelSettings={modelSettings} />
             </Box>
 
-            {/* Sidebar */}
+            {/* Sidebar: Controls for adjusting model settings */}
             <Sidebar
                 modelSettings={modelSettings}
-                onSettingsChange={(newSettings) => setModelSettings(newSettings)}
+                onSettingsChange={(newSettings) => setModelSettings(newSettings)} // Update state with new settings
             />
         </Box>
     );

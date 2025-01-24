@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Container, Box, Typography, Button, Grid } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,9 +7,12 @@ import { faTools, faBars } from "@fortawesome/free-solid-svg-icons";
 import "./../assets/css/styles.css";
 
 const CatalogPage = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // State to track scroll position
+  const [menuOpen, setMenuOpen] = useState(false); // State to track mobile menu open/close
 
+  const navigate = useNavigate();
+
+  // Detect scroll position to update button styles
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -21,12 +25,13 @@ const CatalogPage = () => {
     };
   }, []);
 
+  // Add animations to sections when they come into view
   useEffect(() => {
     const sections = document.querySelectorAll(".content-section");
 
     const observerOptions = {
       root: null,
-      threshold: 0.1,
+      threshold: 0.1, // Trigger animation when 10% of the section is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -45,6 +50,7 @@ const CatalogPage = () => {
     };
   }, []);
 
+  // Circle styling for side buttons
   const circleStyle = {
     width: 150,
     height: 150,
@@ -60,6 +66,7 @@ const CatalogPage = () => {
     cursor: "pointer",
   };
 
+  // Toggle mobile menu
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -67,10 +74,10 @@ const CatalogPage = () => {
   return (
     <>
       <Helmet>
-        <title>Spiegel21 Katalog</title>
+        <title>Spiegel21 Catalog</title> {/* Set page title */}
       </Helmet>
 
-      {/* Scroll-Aware Button */}
+      {/* Scroll-Aware Floating Button */}
       <Box
         sx={{
           position: "fixed",
@@ -96,6 +103,7 @@ const CatalogPage = () => {
             backgroundColor: "#13656e",
           },
         }}
+        onClick={() => navigate('/editor')} // Navigate to the editor page
       >
         <FontAwesomeIcon
           icon={faTools}
@@ -112,17 +120,17 @@ const CatalogPage = () => {
             lineHeight: 1,
           }}
         >
-          3D Konfigurator
+          3D Configurator
         </Typography>
       </Box>
 
-      {/* Right-Aligned Circles */}
+      {/* Fixed Side Circles */}
       <Box
         sx={{
           position: "fixed",
           top: "30%",
           right: "20px",
-          display: { xs: "none", md: "flex" },
+          display: { xs: "none", md: "flex" }, // Show only on medium screens and above
           flexDirection: "column",
           alignItems: "center",
           gap: 3,
@@ -156,13 +164,13 @@ const CatalogPage = () => {
         ))}
       </Box>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Button */}
       <Box
         sx={{
           position: "fixed",
           bottom: "20px",
           right: "20px",
-          display: { xs: "flex", md: "none" },
+          display: { xs: "flex", md: "none" }, // Show only on small screens
           alignItems: "center",
           zIndex: 9999,
         }}
@@ -230,7 +238,7 @@ const CatalogPage = () => {
         </Box>
       )}
 
-      {/* Responsive Banner Section */}
+      {/* Banner Section */}
       <Box
         sx={{
           position: "relative",
@@ -268,7 +276,7 @@ const CatalogPage = () => {
               fontFamily: "Playfair Display",
             }}
           >
-            Willkommen zu Badspiegel Katalog
+            Welcome to the Spiegel21 Catalog
           </Typography>
         </Box>
       </Box>
@@ -303,8 +311,8 @@ const CatalogPage = () => {
             <Grid item xs={12} md={6}>
               <Typography variant="h6" gutterBottom>
                 {index % 2 === 0
-                  ? "Badezimmerspiegel nach Maß - Bolnuevo"
-                  : "Ein weiterer Abschnitt, um die Vielfalt Ihrer Produkte oder Dienstleistungen zu zeigen."}
+                  ? "Custom Bathroom Mirrors - Bolnuevo"
+                  : "Another section to showcase your product or service variety."}
               </Typography>
               <Button
                 variant="contained"
@@ -321,7 +329,7 @@ const CatalogPage = () => {
                   },
                 }}
               >
-                Passen Sie Ihr Produkt an
+                Customize Your Product
               </Button>
             </Grid>
           </Grid>

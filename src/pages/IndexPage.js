@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import badspiegelImage from "../assets/images/badspiegel-540x540.jpg";
 
 const IndexPage = () => {
+  // Common style for circular buttons
   const circleStyle = {
     width: 300,
     height: 300,
@@ -29,32 +30,33 @@ const IndexPage = () => {
 
       <Container
         sx={{
-          height: "100vh",
+          height: "100vh", // Full height container
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#f8f9fa",
+          backgroundColor: "#f8f9fa", // Light gray background color
         }}
       >
         <Box
           sx={{
-            display: "flex",
+            display: "flex", // Arrange items in a row
             justifyContent: "space-around",
             alignItems: "center",
             width: "100%",
-            maxWidth: "1200px",
-            gap: 10,
+            maxWidth: "1200px", // Limit maximum width of the container
+            gap: 10, // Spacing between items
           }}
         >
+          {/* Link to Catalog Page */}
           <Link to="/catalog" style={{ textDecoration: "none" }}>
             <Box textAlign="center">
               <Box
                 sx={circleStyle}
-                onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "12px")}
-                onMouseLeave={(e) => (e.currentTarget.style.borderWidth = "5px")}
+                onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "12px")} // Expand border on hover
+                onMouseLeave={(e) => (e.currentTarget.style.borderWidth = "5px")} // Reset border on mouse leave
               >
                 <img
-                  src={badspiegelImage}
+                  src={badspiegelImage} // Display Badspiegel catalog image
                   alt="Badspiegel catalog"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -68,6 +70,7 @@ const IndexPage = () => {
             </Box>
           </Link>
 
+          {/* Placeholder for Title 2 */}
           <Box textAlign="center">
             <Box
               sx={circleStyle}
@@ -88,6 +91,7 @@ const IndexPage = () => {
             </Typography>
           </Box>
 
+          {/* Placeholder for Title 3 */}
           <Box textAlign="center">
             <Box
               sx={circleStyle}
