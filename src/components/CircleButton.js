@@ -4,29 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const CircleButton = ({ onModelSelect }) => {
-  // State to control the modal visibility
   const [isOpen, setIsOpen] = useState(false);
-  
-  // State to track the selected category
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // Open the modal
   const handleOpen = () => setIsOpen(true);
-
-  // Close the modal
   const handleClose = () => setIsOpen(false);
 
-  // Define categories for filtering
+  // Categories and models for selection
   const categories = ["All", "Category 1", "Category 2", "Category 3"];
-
-  // List of all models with their details
   const allModels = [
-    { name: "Model 1", category: "Category 1", image: "https://placehold.co/200x200" },
-    { name: "Model 2", category: "Category 2", image: "https://placehold.co/200x200" },
-    { name: "Model 3", category: "Category 3", image: "https://placehold.co/200x200" },
-    { name: "Model 4", category: "Category 1", image: "https://placehold.co/200x200" },
-    { name: "Model 5", category: "Category 2", image: "https://placehold.co/200x200" },
-    { name: "Model 6", category: "Category 3", image: "https://placehold.co/200x200" },
+    { name: "SimpleMirror", category: "Category 1", image: "https://placehold.co/200x200" },
+    { name: "AnotherModel", category: "Category 2", image: "https://placehold.co/200x200" },
+    { name: "Model3", category: "Category 3", image: "https://placehold.co/200x200" },
+    { name: "Model4", category: "Category 1", image: "https://placehold.co/200x200" },
+    { name: "Model5", category: "Category 2", image: "https://placehold.co/200x200" },
   ];
 
   // Filter models based on the selected category
@@ -37,28 +28,27 @@ const CircleButton = ({ onModelSelect }) => {
 
   return (
     <>
-      {/* Circle button to open modal */}
+      {/* Circle button to open model selection modal */}
       <Box
         sx={{
-          position: "fixed", // Fixed position on the screen
-          top: "20px", // Distance from the top
-          left: "20px", // Distance from the left
-          width: "50px", // Width of the button
-          height: "50px", // Height of the button
-          borderRadius: "50%", // Circular shape
-          backgroundColor: "#008493", // Background color
-          display: "flex", // Flexbox for centering content
-          alignItems: "center", // Center vertically
-          justifyContent: "center", // Center horizontally
-          color: "#fff", // Text color
-          fontWeight: "bold", // Bold text
-          fontSize: "1.2rem", // Font size
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", // Shadow effect
-          cursor: "pointer", // Pointer cursor on hover
-          zIndex: 9999, // Ensure it appears on top
-          transition: "all 0.3s ease", // Smooth hover effect
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          backgroundColor: "#008493",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+          fontWeight: "bold",
+          fontSize: "1.2rem",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+          cursor: "pointer",
+          zIndex: 9999,
           "&:hover": {
-            backgroundColor: "#13656e", // Hover color change
+            backgroundColor: "#13656e",
           },
         }}
         onClick={handleOpen}
@@ -66,91 +56,91 @@ const CircleButton = ({ onModelSelect }) => {
         <FontAwesomeIcon icon={faBars} />
       </Box>
 
-      {/* Modal for selecting models */}
+      {/* Modal for model selection */}
       <Modal
         open={isOpen}
         onClose={handleClose}
         sx={{
-          display: "flex", // Flexbox layout
-          alignItems: "center", // Center modal vertically
-          justifyContent: "center", // Center modal horizontally
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Box
           sx={{
-            backgroundColor: "#fff", // White background
-            padding: "20px", // Padding inside the modal
-            borderRadius: "8px", // Rounded corners
-            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Shadow effect
-            width: "90%", // Responsive width
-            maxWidth: "600px", // Maximum width
-            maxHeight: "80%", // Limit modal height
-            overflowY: "auto", // Enable scrolling for overflowing content
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+            width: "90%",
+            maxWidth: "800px",
+            maxHeight: "80%",
+            overflowY: "auto",
           }}
         >
           <Typography
             variant="h6"
             sx={{ marginBottom: "20px", fontWeight: "bold", color: "#333" }}
           >
-            Select a Model {/* Modal title */}
+            Select a Model
           </Typography>
 
           {/* Dropdown to filter models by category */}
           <Select
-            value={selectedCategory} // Bind the selected value
-            onChange={(e) => setSelectedCategory(e.target.value)} // Update the state on selection
-            fullWidth // Full width dropdown
-            sx={{ marginBottom: "20px" }} // Spacing below dropdown
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            fullWidth
+            sx={{ marginBottom: "20px" }}
           >
             {categories.map((category, index) => (
               <MenuItem key={index} value={category}>
-                {category} {/* Display category name */}
+                {category}
               </MenuItem>
             ))}
           </Select>
 
-          {/* Grid of filtered models */}
+          {/* Grid of filtered models with images */}
           <Box
             sx={{
-              display: "grid", // Grid layout
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", // Responsive grid columns
-              gap: "15px", // Spacing between grid items
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)", // Three items per row
+              gap: "20px",
             }}
           >
             {filteredModels.map((model, index) => (
               <Box
                 key={index}
                 sx={{
-                  display: "flex", // Flexbox layout
-                  flexDirection: "column", // Stack items vertically
-                  alignItems: "center", // Center items horizontally
-                  gap: "10px", // Spacing between items
-                  padding: "10px", // Inner padding
-                  border: "1px solid #ddd", // Border around each model
-                  borderRadius: "8px", // Rounded corners
-                  cursor: "pointer", // Pointer cursor on hover
-                  transition: "all 0.3s ease", // Smooth hover effect
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#f5f5f5", // Light gray background on hover
-                    transform: "scale(1.05)", // Slightly enlarge on hover
+                    backgroundColor: "#f5f5f5",
+                    transform: "scale(1.05)",
                   },
                 }}
                 onClick={() => {
-                  onModelSelect(model.name); // Call callback with selected model name
-                  handleClose(); // Close the modal
+                  onModelSelect(model.name);
+                  handleClose();
                 }}
               >
                 <img
-                  src={model.image} // Display model image
-                  alt={model.name} // Alt text for the image
+                  src={model.image}
+                  alt={model.name}
                   style={{
-                    width: "100%", // Full width image
-                    height: "150px", // Fixed height
-                    objectFit: "cover", // Maintain aspect ratio
-                    borderRadius: "8px", // Rounded corners for the image
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
                   }}
                 />
-                <Typography>{model.name}</Typography> {/* Display model name */}
+                <Typography>{model.name}</Typography>
               </Box>
             ))}
           </Box>
