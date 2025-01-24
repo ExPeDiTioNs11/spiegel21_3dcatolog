@@ -24,7 +24,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
 
       {/* Input for adjusting scale on the X-axis */}
       <TextField
-        label="Scale (X)" // Input label
+        label="Breite" // Input label
         type="number" // Input type is number
         value={modelSettings.scaleX} // Bind input value to scaleX state
         onChange={(e) =>
@@ -37,7 +37,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
 
       {/* Input for adjusting scale on the Y-axis */}
       <TextField
-        label="Scale (Y)"
+        label="Länge"
         type="number"
         value={modelSettings.scaleY}
         onChange={(e) =>
