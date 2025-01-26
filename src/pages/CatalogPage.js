@@ -120,7 +120,7 @@ const CatalogPage = () => {
             lineHeight: 1,
           }}
         >
-          3D Configurator
+          3D Konfigurator
         </Typography>
       </Box>
 
@@ -311,8 +311,8 @@ const CatalogPage = () => {
             <Grid item xs={12} md={6}>
               <Typography variant="h6" gutterBottom>
                 {index % 2 === 0
-                  ? "Custom Bathroom Mirrors - Bolnuevo"
-                  : "Another section to showcase your product or service variety."}
+                  ? "Badezimmerspiegel nach Maß - Bolnuevo"
+                  : "Ein weiterer Abschnitt zur Präsentation Ihrer Produkt- oder Dienstleistungsvielfalt."}
               </Typography>
               <Button
                 variant="contained"
@@ -329,7 +329,7 @@ const CatalogPage = () => {
                   },
                 }}
               >
-                Customize Your Product
+                Passen Sie Ihr Produkt an
               </Button>
             </Grid>
           </Grid>
