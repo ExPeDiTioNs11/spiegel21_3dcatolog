@@ -3,36 +3,36 @@ import { extend } from "@react-three/fiber";
 import * as THREE from "three";
 import { Reflector } from "three/examples/jsm/objects/Reflector";
 
-// Ayna yüzeyi sınıfı
+// Mirror surface class
 class MirrorSurface extends Reflector {
   constructor(geometry, options = {}) {
     super(geometry, options);
 
-    // Ayna malzemesi ayarları
-    this.material.color = new THREE.Color(0x999999); // Gri renk
-    this.material.roughness = 0.1; // Pürüzsüzlük
-    this.material.metalness = 0.9; // Metalik görünüm
+    // Mirror material settings
+    this.material.color = new THREE.Color(0x999999); // Gray color
+    this.material.roughness = 0.1; // Smoothness
+    this.material.metalness = 0.9; // Metallic look
   }
 }
 
-// React Three Fiber için Reflector'u genişlet
+// Extend Reflector for React Three Fiber
 extend({ MirrorSurface });
 
 const SimpleMirror = ({ scale = [2, 3, 0.1], position = [0, 0, 0] }) => {
   const [sizeX, sizeY, sizeZ] = scale;
 
-  // Geometriyi ayarlama
+  // Adjusting the geometry
   const frameGeometry = React.useMemo(() => new THREE.BoxGeometry(sizeX, sizeY, sizeZ), [sizeX, sizeY, sizeZ]);
   const mirrorGeometry = React.useMemo(() => new THREE.PlaneGeometry(sizeX, sizeY), [sizeX, sizeY]);
 
   return (
     <>
-      {/* Çerçeve */}
+      {/* Frame */}
       <mesh geometry={frameGeometry} position={[position[0], position[1], position[2] - sizeZ / 2 - 0.05]}>
         <meshStandardMaterial color="black" />
       </mesh>
 
-      {/* Yansıma yüzeyi */}
+      {/* Reflection surface */}
       <mirrorSurface
         geometry={mirrorGeometry}
         position={position}
