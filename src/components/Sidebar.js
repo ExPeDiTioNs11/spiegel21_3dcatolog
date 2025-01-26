@@ -19,7 +19,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
       }}
     >
       <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>
-        Model Settings {/* Title of the sidebar */}
+        Modelleinstellungen {/* Title of the sidebar */}
       </Typography>
 
       {/* Input for adjusting scale on the X-axis */}
