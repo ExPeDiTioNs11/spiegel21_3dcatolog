@@ -5,13 +5,13 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const CircleButton = ({ onModelSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Alle");
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
   // Categories and models for selection
-  const categories = ["All", "Category 1", "Category 2", "Category 3"];
+  const categories = ["Alle", "Category 1", "Category 2", "Category 3"];
   const allModels = [
     { name: "SimpleMirror", category: "Category 1", image: "https://placehold.co/200x200" },
     { name: "AnotherModel", category: "Category 2", image: "https://placehold.co/200x200" },
@@ -22,7 +22,7 @@ const CircleButton = ({ onModelSelect }) => {
 
   // Filter models based on the selected category
   const filteredModels =
-    selectedCategory === "All"
+    selectedCategory === "Alle"
       ? allModels
       : allModels.filter((model) => model.category === selectedCategory);
 
@@ -82,7 +82,7 @@ const CircleButton = ({ onModelSelect }) => {
             variant="h6"
             sx={{ marginBottom: "20px", fontWeight: "bold", color: "#333" }}
           >
-            Select a Model
+            Wählen Sie ein Modell
           </Typography>
 
           {/* Dropdown to filter models by category */}
