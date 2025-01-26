@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Environment } from "@react-three/drei";
 
 const Scene = ({ selectedModel, modelSettings }) => {
   const [Model, setModel] = useState(null);
@@ -25,10 +25,16 @@ const Scene = ({ selectedModel, modelSettings }) => {
   };
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 50 }}> {/* Camera starts directly in front of the mirror */}
+    <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
       {/* Lighting */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 10]} intensity={1} />
+
+      {/* HDR Environment */}
+      <Environment
+        files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/brown_photostudio_02_4k.hdr"
+        background={true} // Set HDR as the background
+      />
 
       {/* Model Rendering */}
       {Model && <Model scale={[modelSettings.scaleX, modelSettings.scaleY, modelSettings.scaleZ]} />}

@@ -6,9 +6,9 @@ import CircleButton from "../components/CircleButton";
 
 const EditorPage = () => {
   const [modelSettings, setModelSettings] = useState({
-    scaleX: 1,
-    scaleY: 1,
-    scaleZ: 1,
+    scaleX: 2,
+    scaleY: 3,
+    scaleZ: 0,
   });
 
   const [selectedModel, setSelectedModel] = useState("SimpleMirror"); // Default model
