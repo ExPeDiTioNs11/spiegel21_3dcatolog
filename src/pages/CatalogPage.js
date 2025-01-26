@@ -74,7 +74,7 @@ const CatalogPage = () => {
   return (
     <>
       <Helmet>
-        <title>Spiegel21 Catalog</title> {/* Set page title */}
+        <title>Spiegel21 Katalog</title> {/* Set page title */}
       </Helmet>
 
       {/* Scroll-Aware Floating Button */}
@@ -276,7 +276,7 @@ const CatalogPage = () => {
               fontFamily: "Playfair Display",
             }}
           >
-            Welcome to the Spiegel21 Catalog
+            Willkommen im Spiegel21-Katalog
           </Typography>
         </Box>
       </Box>

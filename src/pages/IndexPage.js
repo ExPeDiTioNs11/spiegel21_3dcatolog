@@ -7,8 +7,6 @@ import badspiegelImage from "../assets/images/badspiegel-540x540.jpg";
 const IndexPage = () => {
   // Common style for circular buttons
   const circleStyle = {
-    width: 300,
-    height: 300,
     border: "5px solid #008493",
     borderRadius: "50%",
     overflow: "hidden",
@@ -19,6 +17,8 @@ const IndexPage = () => {
     backgroundColor: "#ffffff",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     cursor: "pointer",
+    width: { xs: 100, sm: 150, md: 240, lg: 300 }, // iPhone SE için özel boyut
+    height: { xs: 100, sm: 150, md: 240, lg: 300 }, // iPhone SE için özel boyut
   };
 
   return (
@@ -40,11 +40,16 @@ const IndexPage = () => {
         <Box
           sx={{
             display: "flex", // Arrange items in a row
-            justifyContent: "space-around",
+            justifyContent: "center",
             alignItems: "center",
+            flexDirection: { xs: "column", sm: "column", md: "row" }, // Default direction
             width: "100%",
             maxWidth: "1200px", // Limit maximum width of the container
-            gap: 10, // Spacing between items
+            gap: { xs: 3, sm: 6, md: 8, lg: 10 }, // iPhone SE için daha az boşluk
+            "@media (max-width: 320px)": {
+              flexDirection: "column", // Her zaman dikey sıralama
+              gap: 2, // Daha küçük aralık
+            },
           }}
         >
           {/* Link to Catalog Page */}
@@ -52,7 +57,7 @@ const IndexPage = () => {
             <Box textAlign="center">
               <Box
                 sx={circleStyle}
-                onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "12px")} // Expand border on hover
+                onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "10px")} // Expand border on hover
                 onMouseLeave={(e) => (e.currentTarget.style.borderWidth = "5px")} // Reset border on mouse leave
               >
                 <img
@@ -74,7 +79,7 @@ const IndexPage = () => {
           <Box textAlign="center">
             <Box
               sx={circleStyle}
-              onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "12px")}
+              onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "10px")}
               onMouseLeave={(e) => (e.currentTarget.style.borderWidth = "5px")}
             >
               <img
@@ -95,7 +100,7 @@ const IndexPage = () => {
           <Box textAlign="center">
             <Box
               sx={circleStyle}
-              onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "12px")}
+              onMouseEnter={(e) => (e.currentTarget.style.borderWidth = "10px")}
               onMouseLeave={(e) => (e.currentTarget.style.borderWidth = "5px")}
             >
               <img
