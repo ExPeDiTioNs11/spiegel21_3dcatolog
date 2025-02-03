@@ -71,7 +71,7 @@ const Scene = ({ selectedModel, modelSettings }) => {
         sx={{
           position: "absolute",
           top: 20,
-          right: 100,
+          right: 200,
           backgroundColor: "#fff",
           borderRadius: "50%",
           boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
