@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
+import { IconButton } from "@mui/material";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
 const Scene = ({ selectedModel, modelSettings }) => {
   const [Model, setModel] = useState(null);
-  const [azimuthAngle, setAzimuthAngle] = useState(0); // Current azimuth angle
+  const [azimuthAngle, setAzimuthAngle] = useState(0);
+  const [isLightOn, setIsLightOn] = useState(true);
 
   React.useEffect(() => {
     if (selectedModel) {
@@ -15,9 +18,9 @@ const Scene = ({ selectedModel, modelSettings }) => {
   }, [selectedModel]);
 
   const handleAzimuthClamp = (angle) => {
-    const maxLimit = Math.PI / 4; // 45 degrees
-    const minLimit = -Math.PI / 4; // -45 degrees
-    const buffer = 0.035; // Allow 2 degrees of buffer
+    const maxLimit = Math.PI / 4;
+    const minLimit = -Math.PI / 4;
+    const buffer = 0.035;
 
     if (angle > maxLimit + buffer) return maxLimit;
     if (angle < minLimit - buffer) return minLimit;
@@ -25,47 +28,64 @@ const Scene = ({ selectedModel, modelSettings }) => {
   };
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 10]} intensity={1} />
+    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
+      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+        {isLightOn && <ambientLight intensity={0.5} />}
+        {isLightOn && <directionalLight position={[10, 10, 10]} intensity={1} />}
 
-      {/* HDR Environment */}
-      <Environment
-        files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/brown_photostudio_02_4k.hdr"
-        background={true} // Set HDR as the background
-      />
+        <Environment
+          files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/brown_photostudio_02_4k.hdr"
+          background={true}
+        />
 
-      {/* Model Rendering */}
-      {Model && <Model scale={[modelSettings.scaleX, modelSettings.scaleY, modelSettings.scaleZ]} />}
+        {Model && (
+          <Model scale={[modelSettings.scaleX, modelSettings.scaleY, modelSettings.scaleZ]} />
+        )}
 
-      {/* Orbit Controls with smooth limited rotation and snap-back */}
-      <OrbitControls
-        maxPolarAngle={Math.PI / 2.5} // Restrict vertical rotation to limit upward view
-        minPolarAngle={Math.PI / 3} // Restrict downward rotation
-        enablePan={false} // Disable panning
-        enableDamping={true} // Enable damping for smoother movement
-        dampingFactor={0.1} // Control damping speed
-        rotateSpeed={0.8} // Adjust rotation speed
-        onEnd={(e) => {
-          // Snap back to the closest valid angle when mouse is released
-          const currentAngle = e.target.getAzimuthalAngle();
-          const clampedAngle = handleAzimuthClamp(currentAngle);
+        <OrbitControls
+          maxPolarAngle={Math.PI / 2.5}
+          minPolarAngle={Math.PI / 3}
+          enablePan={false}
+          enableDamping={true}
+          dampingFactor={0.1}
+          rotateSpeed={0.8}
+          onEnd={(e) => {
+            const currentAngle = e.target.getAzimuthalAngle();
+            const clampedAngle = handleAzimuthClamp(currentAngle);
+            if (currentAngle !== clampedAngle) {
+              e.target.setAzimuthalAngle(clampedAngle);
+              e.target.update();
+            }
+          }}
+          onChange={(e) => {
+            const currentAngle = e.target.getAzimuthalAngle();
+            if (currentAngle !== azimuthAngle) {
+              setAzimuthAngle(currentAngle);
+            }
+          }}
+        />
+      </Canvas>
 
-          // Only update if necessary
-          if (currentAngle !== clampedAngle) {
-            e.target.setAzimuthalAngle(clampedAngle);
-            e.target.update(); // Ensure the controls are updated
-          }
+      <IconButton
+        onClick={() => setIsLightOn(!isLightOn)}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 100,
+          backgroundColor: "#fff",
+          borderRadius: "50%",
+          boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+          width: 50,
+          height: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 10,
         }}
-        onChange={(e) => {
-          const currentAngle = e.target.getAzimuthalAngle();
-          if (currentAngle !== azimuthAngle) {
-            setAzimuthAngle(currentAngle); // Update state without looping
-          }
-        }}
-      />
-    </Canvas>
+      >
+        <LightbulbIcon sx={{ color: isLightOn ? "#FFD700" : "#B0B0B0" }} />
+      </IconButton>
+    </div>
   );
 };
 
