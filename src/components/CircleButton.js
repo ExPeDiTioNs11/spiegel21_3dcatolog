@@ -28,8 +28,9 @@ const CircleButton = ({ onModelSelect }) => {
 
   return (
     <>
-      {/* Circle button to open model selection modal */}
+      {/* Circle button with class for Joyride */}
       <Box
+        className="circle-button" // Joyride'ın hedef alabileceği sınıf
         sx={{
           position: "fixed",
           top: "20px",

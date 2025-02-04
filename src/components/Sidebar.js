@@ -26,6 +26,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
 
   return (
     <Box
+    className="sidebar-container"
       sx={{
         width: "400px",
         height: "100vh",
