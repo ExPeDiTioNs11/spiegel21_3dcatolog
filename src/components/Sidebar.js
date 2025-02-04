@@ -26,22 +26,31 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
 
   return (
     <Box
-    className="sidebar-container"
+      className="sidebar-container"
       sx={{
         width: "400px",
         height: "100vh",
         position: "fixed",
         top: 0,
         right: 0,
-        backgroundColor: "#f4f4f4",
-        boxShadow: "-2px 0px 5px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#f9fafb", // Daha soft bir görünüm
+        boxShadow: "-2px 0px 10px rgba(0, 0, 0, 0.1)",
         display: "flex",
         flexDirection: "column",
-        padding: "20px",
+        padding: "25px",
         gap: "20px",
       }}
     >
-      <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>
+      <Typography 
+        variant="h5" 
+        sx={{ 
+          fontWeight: "bold", 
+          color: "#333", 
+          textTransform: "uppercase", 
+          borderBottom: "2px solid #ddd", 
+          paddingBottom: "10px" 
+        }}
+      >
         {steps[currentStep].label}
       </Typography>
 
@@ -55,7 +64,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
         {currentStep === 0 && (
           <>
             <TextField
-              label="Breite"
+              label="Breite (mm)"
               type="number"
               value={modelSettings.scaleX}
               onChange={(e) =>
@@ -64,10 +73,19 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
               variant="outlined"
               size="small"
               fullWidth
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: "8px",
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#008493" },
+                  "&:hover fieldset": { borderColor: "#006f73" },
+                },
+                marginBottom: "15px",
+              }}
             />
 
             <TextField
-              label="Länge"
+              label="Länge (mm)"
               type="number"
               value={modelSettings.scaleY}
               onChange={(e) =>
@@ -76,76 +94,80 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
               variant="outlined"
               size="small"
               fullWidth
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: "8px",
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#008493" },
+                  "&:hover fieldset": { borderColor: "#006f73" },
+                },
+                marginBottom: "15px",
+              }}
             />
           </>
         )}
 
         {currentStep === 1 && (
           <>
-            <Typography variant="body1">Lichttemperatur</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Lichttemperatur
+            </Typography>
             <Select
               value={modelSettings.lightTemperature || '2000K'}
               onChange={(e) => onSettingsChange({ ...modelSettings, lightTemperature: e.target.value })}
               fullWidth
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: "8px",
+                marginBottom: "15px",
+              }}
             >
               <MenuItem value="2000K">2K</MenuItem>
               <MenuItem value="3000K">3K</MenuItem>
               <MenuItem value="6000K">6K</MenuItem>
             </Select>
 
-            <Typography variant="body1">Lichtfarbe</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Lichtfarbe
+            </Typography>
             <Select
               value={modelSettings.lightColor || '#FFFFFF'}
               onChange={(e) => onSettingsChange({ ...modelSettings, lightColor: e.target.value })}
               fullWidth
+              sx={{
+                backgroundColor: "#ffffff",
+                borderRadius: "8px",
+              }}
             >
               <MenuItem value="#FFFFFF">Weiß</MenuItem>
               <MenuItem value="#FF0000">Rot</MenuItem>
               <MenuItem value="#00FF00">Grün</MenuItem>
               <MenuItem value="#0000FF">Blau</MenuItem>
               <MenuItem value="#FFFF00">Gelb</MenuItem>
-              <MenuItem value="#FF00FF">Magenta</MenuItem>
-              <MenuItem value="#00FFFF">Cyan</MenuItem>
-              <MenuItem value="#FFA500">Orange</MenuItem>
-              <MenuItem value="#800080">Lila</MenuItem>
-              <MenuItem value="#A52A2A">Braun</MenuItem>
             </Select>
           </>
         )}
 
         {currentStep === 2 && (
           <>
-            <Typography variant="body1">Bluetooth und Soundsystem</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+              Bluetooth und Soundsystem
+            </Typography>
             <ToggleButton
               value="bluetooth"
               selected={bluetoothEnabled}
               onChange={() => setBluetoothEnabled(!bluetoothEnabled)}
-              sx={{ backgroundColor: bluetoothEnabled ? "#1976d2" : "#f4f4f4", color: bluetoothEnabled ? "white" : "black" }}
+              sx={{
+                backgroundColor: bluetoothEnabled ? "#008493" : "#f4f4f4",
+                color: bluetoothEnabled ? "white" : "black",
+                borderRadius: "8px",
+                padding: "10px 20px",
+                marginBottom: "15px",
+                "&:hover": { backgroundColor: bluetoothEnabled ? "#006f73" : "#e0e0e0" },
+              }}
             >
               Aktivieren
             </ToggleButton>
-
-            <Typography variant="body1">Uhrentyp</Typography>
-            <Select
-              value={modelSettings.clockType || "analog"}
-              onChange={(e) => onSettingsChange({ ...modelSettings, clockType: e.target.value })}
-              fullWidth
-            >
-              <MenuItem value="analog">Analog</MenuItem>
-              <MenuItem value="digital">Digital</MenuItem>
-            </Select>
-
-            <Typography variant="body1">Uhrposition</Typography>
-            <Select
-              value={modelSettings.clockPosition || "top-left"}
-              onChange={(e) => onSettingsChange({ ...modelSettings, clockPosition: e.target.value })}
-              fullWidth
-            >
-              <MenuItem value="top-left">Links oben</MenuItem>
-              <MenuItem value="bottom-left">Links unten</MenuItem>
-              <MenuItem value="top-right">Rechts oben</MenuItem>
-              <MenuItem value="bottom-right">Rechts unten</MenuItem>
-            </Select>
           </>
         )}
       </motion.div>
@@ -155,7 +177,14 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
           <Button
             variant="contained"
             onClick={handleBack}
-            sx={{ backgroundColor: "#008493", fontWeight: "bold", color: "white", padding: "10px 20px" }}
+            sx={{
+              backgroundColor: "#008493",
+              fontWeight: "bold",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              "&:hover": { backgroundColor: "#006f73" },
+            }}
           >
             {steps[currentStep - 1].label}
           </Button>
@@ -165,7 +194,14 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
           <Button
             variant="contained"
             onClick={handleNext}
-            sx={{ backgroundColor: "#008493", fontWeight: "bold", color: "white", padding: "10px 20px" }}
+            sx={{
+              backgroundColor: "#008493",
+              fontWeight: "bold",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              "&:hover": { backgroundColor: "#006f73" },
+            }}
           >
             {steps[currentStep + 1].label}
           </Button>
