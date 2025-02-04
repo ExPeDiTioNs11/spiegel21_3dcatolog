@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Modal, Typography, MenuItem, Select } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -6,31 +6,47 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 const CircleButton = ({ onModelSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("Alle");
+  const [availableModels, setAvailableModels] = useState([]);
 
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+  useEffect(() => {
+    const fetchModels = async () => {
+      const modelFolders = ["mirrors", "cabinets"];
+      let models = [];
 
-  // Categories and models for selection
-  const categories = ["Alle", "Category 1", "Category 2", "Category 3"];
-  const allModels = [
-    { name: "SimpleMirror", category: "Category 1", image: "https://placehold.co/200x200" },
-    { name: "AnotherModel", category: "Category 2", image: "https://placehold.co/200x200" },
-    { name: "Model3", category: "Category 3", image: "https://placehold.co/200x200" },
-    { name: "Model4", category: "Category 1", image: "https://placehold.co/200x200" },
-    { name: "Model5", category: "Category 2", image: "https://placehold.co/200x200" },
-  ];
+      try {
+        // Webpack ile tüm modelleri tarayarak içe aktar
+        const context = require.context("../models", true, /\.js$/);
+        const files = context.keys();
 
-  // Filter models based on the selected category
-  const filteredModels =
-    selectedCategory === "Alle"
-      ? allModels
-      : allModels.filter((model) => model.category === selectedCategory);
+        files.forEach((path) => {
+          const folderMatch = path.match(/\.\/(.*?)\//);
+          const folder = folderMatch ? folderMatch[1] : "others"; // Modelin klasörünü belirle
+
+          const nameMatch = path.match(/\/([^/]+)\.js$/);
+          const modelName = nameMatch ? nameMatch[1] : "Unknown"; // Modelin adını belirle
+
+          if (modelFolders.includes(folder)) {
+            models.push({
+              name: modelName,
+              category: folder,
+              image: `https://placehold.co/200x200`, // Placeholder resim
+            });
+          }
+        });
+      } catch (err) {
+        console.error("Hata! Modeller yüklenemedi:", err);
+      }
+
+      setAvailableModels(models);
+    };
+
+    fetchModels();
+  }, []);
 
   return (
     <>
-      {/* Circle button with class for Joyride */}
+      {/* Model Seçme Butonu */}
       <Box
-        className="circle-button" // Joyride'ın hedef alabileceği sınıf
         sx={{
           position: "fixed",
           top: "20px",
@@ -43,24 +59,19 @@ const CircleButton = ({ onModelSelect }) => {
           alignItems: "center",
           justifyContent: "center",
           color: "#fff",
-          fontWeight: "bold",
-          fontSize: "1.2rem",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
           cursor: "pointer",
           zIndex: 9999,
-          "&:hover": {
-            backgroundColor: "#13656e",
-          },
+          "&:hover": { backgroundColor: "#13656e" },
         }}
-        onClick={handleOpen}
+        onClick={() => setIsOpen(true)}
       >
         <FontAwesomeIcon icon={faBars} />
       </Box>
 
-      {/* Modal for model selection */}
+      {/* Model Seçme Modalı */}
       <Modal
         open={isOpen}
-        onClose={handleClose}
+        onClose={() => setIsOpen(false)}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -79,71 +90,64 @@ const CircleButton = ({ onModelSelect }) => {
             overflowY: "auto",
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{ marginBottom: "20px", fontWeight: "bold", color: "#333" }}
-          >
+          <Typography variant="h6" sx={{ marginBottom: "20px", fontWeight: "bold", color: "#333" }}>
             Wählen Sie ein Modell
           </Typography>
 
-          {/* Dropdown to filter models by category */}
+          {/* Model Kategorileri */}
           <Select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             fullWidth
             sx={{ marginBottom: "20px" }}
           >
-            {categories.map((category, index) => (
-              <MenuItem key={index} value={category}>
+            <MenuItem value="Alle">Alle</MenuItem>
+            {["mirrors", "cabinets"].map((category) => (
+              <MenuItem key={category} value={category}>
                 {category}
               </MenuItem>
             ))}
           </Select>
 
-          {/* Grid of filtered models with images */}
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)", // Three items per row
-              gap: "20px",
-            }}
-          >
-            {filteredModels.map((model, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    backgroundColor: "#f5f5f5",
-                    transform: "scale(1.05)",
-                  },
-                }}
-                onClick={() => {
-                  onModelSelect(model.name);
-                  handleClose();
-                }}
-              >
-                <img
-                  src={model.image}
-                  alt={model.name}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
+          {/* Model Listesi */}
+          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+            {availableModels
+              .filter((m) => selectedCategory === "Alle" || m.category === selectedCategory)
+              .map((model) => (
+                <Box
+                  key={model.name}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "10px",
+                    border: "1px solid #ddd",
                     borderRadius: "8px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                      transform: "scale(1.05)",
+                    },
                   }}
-                />
-                <Typography>{model.name}</Typography>
-              </Box>
-            ))}
+                  onClick={() => {
+                    onModelSelect(model.name);
+                    setIsOpen(false);
+                  }}
+                >
+                  <img
+                    src={model.image}
+                    alt={model.name}
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Typography>{model.name}</Typography>
+                </Box>
+              ))}
           </Box>
         </Box>
       </Modal>
