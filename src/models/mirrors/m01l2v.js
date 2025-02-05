@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Reflector } from "three/examples/jsm/objects/Reflector";
 
