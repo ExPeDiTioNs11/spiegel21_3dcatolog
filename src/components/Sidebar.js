@@ -33,7 +33,7 @@ const Sidebar = ({ modelSettings, onSettingsChange }) => {
         position: "fixed",
         top: 0,
         right: 0,
-        backgroundColor: "#f9fafb", // Daha soft bir görünüm
+        backgroundColor: "#f9fafb", 
         boxShadow: "-2px 0px 10px rgba(0, 0, 0, 0.1)",
         display: "flex",
         flexDirection: "column",

@@ -6,13 +6,13 @@ import CircleButton from "../components/CircleButton";
 import Joyride from "react-joyride";
 import { motion, AnimatePresence } from "framer-motion";
 
-// TourButton Componentu: 
-// Eğer tur tamamlandıysa (startCountdown true) 10 saniyelik geri sayım başlar ve 2 saniyelik fade-out ile buton kaybolur.
+// TourButton Component: 
+// If the round is completed (startCountdown true) a 10 second countdown begins and the button disappears with a 2 second fade-out.
 const TourButton = ({ onClick, startCountdown, resetKey }) => {
   const [timeLeft, setTimeLeft] = useState(10);
   const [visible, setVisible] = useState(true);
 
-  // resetKey değiştiğinde geri sayımı ve görünürlüğü sıfırla
+  // Reset countdown and visibility when resetKey changes
   useEffect(() => {
     setTimeLeft(10);
     setVisible(true);
@@ -26,7 +26,7 @@ const TourButton = ({ onClick, startCountdown, resetKey }) => {
         }, 1000);
         return () => clearInterval(timer);
       } else {
-        // Geri sayım 0'a ulaştığında, 2 saniyelik fade-out ile butonu gizle
+        // When countdown reaches 0, hide button with 2 seconds fade-out
         const fadeTimer = setTimeout(() => {
           setVisible(false);
         }, 2000);
@@ -71,12 +71,12 @@ const EditorPage = () => {
     scaleY: 3,
     scaleZ: 0,
   });
-  const [selectedModel, setSelectedModel] = useState("SimpleMirror"); // Varsayılan model
-  const [tutorialActive, setTutorialActive] = useState(false); // Eğitim turu aktif mi?
-  const [tourEnded, setTourEnded] = useState(false); // Tur tamamlandı mı?
-  const [tourResetKey, setTourResetKey] = useState(0); // Her yeniden başlatmada artan değer
+  const [selectedModel, setSelectedModel] = useState("SimpleMirror"); // Default model
+  const [tutorialActive, setTutorialActive] = useState(false); // Is the training tour active?
+  const [tourEnded, setTourEnded] = useState(false); // Is the tour complete?
+  const [tourResetKey, setTourResetKey] = useState(0); // Increasing value on each restart
 
-  // Eğitim turu adımları
+  // Training tour steps
   const steps = [
     {
       target: ".circle-button",
@@ -98,7 +98,7 @@ const EditorPage = () => {
     },
   ];
 
-  // Sayfa yüklendiğinde, localStorage kontrolü ile tur otomatik başlatılır (sadece ilk ziyaret için)
+  // When the page loads, the tour is automatically started with the localStorage control (only for the first visit)
   useEffect(() => {
     const tourSeen = localStorage.getItem("tourSeen");
     if (!tourSeen) {
@@ -109,7 +109,7 @@ const EditorPage = () => {
     }
   }, []);
 
-  // Joyride callback: Tur tamamlandığında veya atlandığında
+  // Joyride callback: When a round is completed or skipped
   const handleJoyrideCallback = (data) => {
     if (data.status === "finished" || data.status === "skipped") {
       setTutorialActive(false);
@@ -118,7 +118,7 @@ const EditorPage = () => {
     }
   };
 
-  // Tur yeniden başlatıldığında: localStorage temizlenir ve turResetKey artar, böylece TourButton yeniden 10 saniyeden başlar
+  // When the tour is restarted: localStorage is cleared and tourResetKey is incremented, so the TourButton starts again from 10 seconds
   const handleTourRestart = () => {
     localStorage.removeItem("tourSeen");
     setTutorialActive(true);
@@ -128,7 +128,7 @@ const EditorPage = () => {
 
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Eğitim turu bileşeni */}
+      {/* Educational tour component */}
       <Joyride
         steps={steps}
         run={tutorialActive}
@@ -150,7 +150,7 @@ const EditorPage = () => {
         }}
       />
 
-      {/* Model Seçim Butonu */}
+      {/* Model Selection Button */}
       <CircleButton
         className="circle-button"
         onModelSelect={(modelName) => {
@@ -159,7 +159,7 @@ const EditorPage = () => {
         }}
       />
 
-      {/* 3D Model Sahnesi */}
+      {/* 3D Model Scene */}
       <Box
         className="scene-container"
         sx={{
@@ -173,16 +173,16 @@ const EditorPage = () => {
         <Scene selectedModel={selectedModel} modelSettings={modelSettings} />
       </Box>
 
-      {/* Sidebar: Ayarlar */}
+      {/* Sidebar: Settings */}
       <Sidebar
         className="sidebar-container"
         modelSettings={modelSettings}
         onSettingsChange={(newSettings) => setModelSettings(newSettings)}
       />
 
-      {/* Geri sayımlı Tour Starten Butonu:
-          Eğer tur tamamlanmışsa (tourEnded true) buton countdown ile görünecek.
-          Butona tıklanırsa tur yeniden başlatılır */}
+      {/* Countdown Tour Start Button:
+          If the tour is completed (tourEnded true) the button will appear with countdown.
+          If the button is clicked, the tour will restart */}
       <TourButton
         onClick={handleTourRestart}
         startCountdown={tourEnded}

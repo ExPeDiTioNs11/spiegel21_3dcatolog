@@ -17,8 +17,8 @@ const IndexPage = () => {
     backgroundColor: "#ffffff",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     cursor: "pointer",
-    width: { xs: 100, sm: 150, md: 240, lg: 300 }, // iPhone SE için özel boyut
-    height: { xs: 100, sm: 150, md: 240, lg: 300 }, // iPhone SE için özel boyut
+    width: { xs: 100, sm: 150, md: 240, lg: 300 }, // Special size for iPhone SE
+    height: { xs: 100, sm: 150, md: 240, lg: 300 }, // Special size for iPhone SE
   };
 
   return (
@@ -45,10 +45,10 @@ const IndexPage = () => {
             flexDirection: { xs: "column", sm: "column", md: "row" }, // Default direction
             width: "100%",
             maxWidth: "1200px", // Limit maximum width of the container
-            gap: { xs: 3, sm: 6, md: 8, lg: 10 }, // iPhone SE için daha az boşluk
+            gap: { xs: 3, sm: 6, md: 8, lg: 10 }, // Less space for iPhone SE
             "@media (max-width: 320px)": {
-              flexDirection: "column", // Her zaman dikey sıralama
-              gap: 2, // Daha küçük aralık
+              flexDirection: "column", // Always sort vertically
+              gap: 2, // Smaller range
             },
           }}
         >

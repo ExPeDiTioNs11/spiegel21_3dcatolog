@@ -14,22 +14,22 @@ const CircleButton = ({ onModelSelect }) => {
       let models = [];
 
       try {
-        // Webpack ile tüm modelleri tarayarak içe aktar
+        // Scan and import all models with Webpack
         const context = require.context("../models", true, /\.js$/);
         const files = context.keys();
 
         files.forEach((path) => {
           const folderMatch = path.match(/\.\/(.*?)\//);
-          const folder = folderMatch ? folderMatch[1] : "others"; // Modelin klasörünü belirle
+          const folder = folderMatch ? folderMatch[1] : "others";  
 
           const nameMatch = path.match(/\/([^/]+)\.js$/);
-          const modelName = nameMatch ? nameMatch[1] : "Unknown"; // Modelin adını belirle
+          const modelName = nameMatch ? nameMatch[1] : "Unknown";  
 
           if (modelFolders.includes(folder)) {
             models.push({
               name: modelName,
               category: folder,
-              image: `https://placehold.co/200x200`, // Placeholder resim
+              image: `https://placehold.co/200x200`, // Placeholder image
             });
           }
         });
@@ -45,7 +45,7 @@ const CircleButton = ({ onModelSelect }) => {
 
   return (
     <>
-      {/* Model Seçme Butonu (Eğitim turu için .circle-button classı eklendi) */}
+      {/* Model Selection Button */}
       <Box
         className="circle-button"
         sx={{
@@ -69,7 +69,7 @@ const CircleButton = ({ onModelSelect }) => {
         <FontAwesomeIcon icon={faBars} />
       </Box>
 
-      {/* Model Seçme Modalı */}
+      {/* Model Selection Modal */}
       <Modal
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -95,7 +95,7 @@ const CircleButton = ({ onModelSelect }) => {
             Wählen Sie ein Modell
           </Typography>
 
-          {/* Model Kategorileri */}
+          {/* Model Categories */}
           <Select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -110,7 +110,7 @@ const CircleButton = ({ onModelSelect }) => {
             ))}
           </Select>
 
-          {/* Model Listesi */}
+          {/* Model List */}
           <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
             {availableModels
               .filter((m) => selectedCategory === "Alle" || m.category === selectedCategory)
