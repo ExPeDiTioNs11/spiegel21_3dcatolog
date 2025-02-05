@@ -45,8 +45,9 @@ const CircleButton = ({ onModelSelect }) => {
 
   return (
     <>
-      {/* Model Seçme Butonu */}
+      {/* Model Seçme Butonu (Eğitim turu için .circle-button classı eklendi) */}
       <Box
+        className="circle-button"
         sx={{
           position: "fixed",
           top: "20px",
