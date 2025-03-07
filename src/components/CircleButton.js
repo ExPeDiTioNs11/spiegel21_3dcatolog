@@ -33,15 +33,36 @@ const CircleButton = ({ onModelSelect }) => {
             });
           }
         });
+
+        // If models array is not empty, select the first model by default
+        if (models.length > 0) {
+          const defaultModel = models[0];
+          onModelSelect && onModelSelect(defaultModel.name, {
+            scaleX: 1,
+            scaleY: 1,
+            scaleZ: 1,
+            color: '#FFFFFF'
+          });
+        }
       } catch (err) {
-        console.error("Hata! Modeller yüklenemedi:", err);
+        console.error("Error! Models could not be loaded:", err);
       }
 
       setAvailableModels(models);
     };
 
     fetchModels();
-  }, []);
+  }, [onModelSelect]);
+
+  const handleModelSelect = (modelName) => {
+    onModelSelect && onModelSelect(modelName, {
+      scaleX: 1,
+      scaleY: 1,
+      scaleZ: 1,
+      color: '#FFFFFF'
+    });
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -81,59 +102,49 @@ const CircleButton = ({ onModelSelect }) => {
       >
         <Box
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: "white",
             padding: "20px",
             borderRadius: "8px",
-            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
-            width: "90%",
-            maxWidth: "800px",
+            maxWidth: "80%",
             maxHeight: "80%",
-            overflowY: "auto",
+            overflow: "auto",
           }}
         >
-          <Typography variant="h6" sx={{ marginBottom: "20px", fontWeight: "bold", color: "#333" }}>
-            Wählen Sie ein Modell
+          <Typography variant="h6" gutterBottom>
+            Select Model
           </Typography>
-
-          {/* Model Categories */}
+          
           <Select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             fullWidth
             sx={{ marginBottom: "20px" }}
           >
-            <MenuItem value="Alle">Alle</MenuItem>
-            {["mirrors", "cabinets"].map((category) => (
-              <MenuItem key={category} value={category}>
-                {category}
-              </MenuItem>
-            ))}
+            <MenuItem value="Alle">All</MenuItem>
+            <MenuItem value="mirrors">Mirrors</MenuItem>
+            <MenuItem value="cabinets">Cabinets</MenuItem>
           </Select>
 
-          {/* Model List */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: "20px",
+            }}
+          >
             {availableModels
-              .filter((m) => selectedCategory === "Alle" || m.category === selectedCategory)
+              .filter(
+                (model) =>
+                  selectedCategory === "Alle" ||
+                  model.category === selectedCategory
+              )
               .map((model) => (
                 <Box
                   key={model.name}
+                  onClick={() => handleModelSelect(model.name)}
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
                     cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                      transform: "scale(1.05)",
-                    },
-                  }}
-                  onClick={() => {
-                    onModelSelect(model.name);
-                    setIsOpen(false);
+                    "&:hover": { opacity: 0.8 },
                   }}
                 >
                   <img
@@ -141,12 +152,14 @@ const CircleButton = ({ onModelSelect }) => {
                     alt={model.name}
                     style={{
                       width: "100%",
-                      height: "150px",
+                      height: "200px",
                       objectFit: "cover",
-                      borderRadius: "8px",
+                      borderRadius: "4px",
                     }}
                   />
-                  <Typography>{model.name}</Typography>
+                  <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+                    {model.name}
+                  </Typography>
                 </Box>
               ))}
           </Box>

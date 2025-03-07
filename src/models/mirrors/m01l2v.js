@@ -14,7 +14,10 @@ const LEDMirror = ({ scale = [3, 2, 0.1], position = [0, 0, 0] }) => {
     color: 0x888888,
     recursion: 1,
   });
-  reflector.rotation.x = Math.PI;
+
+  // Aynayı doğru şekilde döndürelim
+  reflector.rotation.x = -9.42;
+  reflector.rotation.y = Math.PI; // 180 derece döndürerek arkayı öne getirme
 
   // LED Lights
   const ledMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 });
