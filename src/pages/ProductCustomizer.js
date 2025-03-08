@@ -21,13 +21,19 @@ import {
   useTheme,
   useMediaQuery,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  Fab,
 } from '@mui/material';
 import Scene from '../components/Scene';
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FolderIcon from '@mui/icons-material/Folder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LoadingScreen from '../components/LoadingScreen';
 import { useLanguage } from '../i18n/LanguageContext';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const steps = ['sizeSettings', 'colorSelection', 'accessories', 'summary'];
 
@@ -80,13 +86,58 @@ const productDetails = {
   ]
 };
 
+const buttonStyles = {
+  primary: {
+    bgcolor: '#008098',
+    color: '#fff',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      bgcolor: '#00907d',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 8px rgba(0, 128, 152, 0.2)'
+    }
+  },
+  outlined: {
+    color: '#008098',
+    borderColor: '#008098',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      borderColor: '#00907d',
+      color: '#00907d',
+      bgcolor: 'rgba(0, 144, 125, 0.08)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 8px rgba(0, 128, 152, 0.1)'
+    }
+  }
+};
+
+// Add price formatter function
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(price);
+};
+
+const formatPriceDifference = (priceDiff) => {
+  const sign = priceDiff >= 0 ? '+' : '';
+  return sign + formatPrice(priceDiff);
+};
+
 const ProductCustomizer = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isHumanLoading, setIsHumanLoading] = useState(false);
   const [modelError, setModelError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [showHuman, setShowHuman] = useState(false);
+  const [humanGender, setHumanGender] = useState('male');
+  const [humanHeight, setHumanHeight] = useState(170);
   const [modelSettings, setModelSettings] = useState({
     width: 100,
     height: 150,
@@ -100,17 +151,24 @@ const ProductCustomizer = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const [scrolled, setScrolled] = useState(false);
   const { t } = useLanguage();
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
+    // Reset scroll position when component mounts
+    window.scrollTo(0, 0);
+
     const handleScroll = () => {
       const offset = window.scrollY;
       const viewportHeight = window.innerHeight;
       setScrolled(offset > viewportHeight * 0.2);
+      setShowScrollTop(offset > 400);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // Empty dependency array ensures this only runs once on mount
 
   useEffect(() => {
     const initializeProduct = async () => {
@@ -137,6 +195,14 @@ const ProductCustomizer = () => {
 
     initializeProduct();
   }, [productId]);
+
+  useEffect(() => {
+    // Sayfa yükleme efekti
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
@@ -169,9 +235,10 @@ const ProductCustomizer = () => {
     }));
   };
 
-  const basePrice = 2999;
+  // Update base price to Euro
+  const basePrice = 299;
 
-  // Calculate price difference based on size changes
+  // Update price calculations
   const calculatePriceDifference = (width, height) => {
     const standardSize = (100 * 150);
     const newSize = (width * height);
@@ -179,34 +246,57 @@ const ProductCustomizer = () => {
     return Math.round(priceDiff);
   };
 
-  // Calculate price difference based on color selection
   const calculateColorPriceDifference = (colorId) => {
     const color = colors.find(c => c.id === colorId);
     const priceDiff = basePrice * (color.priceMultiplier - 1);
     return Math.round(priceDiff);
   };
 
-  // Calculate total price including size and color adjustments
   const calculatePrice = () => {
-    const basePrice = 2999;
     const sizeMultiplier = (modelSettings.width * modelSettings.height) / (100 * 150);
-    const colorMultiplier = modelSettings.color === 'gold' ? 1.2 : 1;
+    const colorMultiplier = colors.find(c => c.id === modelSettings.color)?.priceMultiplier || 1;
     return Math.round(basePrice * sizeMultiplier * colorMultiplier);
   };
 
   const handleSaveDesign = () => {
     localStorage.setItem(`savedDesign_${productId}`, JSON.stringify(modelSettings));
     setIsSaved(true);
+    setOpenDialog(true);
   };
 
   const handleDeleteSavedDesign = () => {
     localStorage.removeItem(`savedDesign_${productId}`);
     setIsSaved(false);
-    setActiveStep(0); // Go back to first step
+    setActiveStep(0);
   };
 
   const handleViewSavedDesigns = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleNavigateToSavedDesigns = () => {
+    setOpenDialog(false);
     navigate('/saved-designs');
+  };
+
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleShowHuman = () => {
+    setIsHumanLoading(true);
+    setShowHuman(!showHuman);
+    // İnsan modeli yüklenme simülasyonu
+    setTimeout(() => {
+      setIsHumanLoading(false);
+    }, 1000);
   };
 
   const renderStepContent = (step) => {
@@ -230,8 +320,7 @@ const ProductCustomizer = () => {
                     fontWeight: 'medium'
                   }}
                 >
-                  {calculatePriceDifference(modelSettings.width, modelSettings.height) >= 0 ? '+' : ''}
-                  {calculatePriceDifference(modelSettings.width, modelSettings.height).toLocaleString('tr-TR')} ₺
+                  {formatPriceDifference(calculatePriceDifference(modelSettings.width, modelSettings.height))}
                 </Typography>
               </Box>
 
@@ -357,7 +446,7 @@ const ProductCustomizer = () => {
                           >
                             {calculateColorPriceDifference(color.id) > 0 ? '+' : ''}
                             {calculateColorPriceDifference(color.id) === 0 ? t('standard') : 
-                             `${calculateColorPriceDifference(color.id).toLocaleString('tr-TR')} ₺`}
+                             formatPrice(calculateColorPriceDifference(color.id))}
                           </Typography>
                         </Box>
                       }
@@ -389,7 +478,7 @@ const ProductCustomizer = () => {
                 {t('color')}: {t(colors.find(c => c.id === modelSettings.color)?.name)}
               </Typography>
               <Typography variant="h5" sx={{ mt: 3, mb: 4 }}>
-                {t('total')}: {calculatePrice().toLocaleString('tr-TR')} ₺
+                {t('total')}: {formatPrice(calculatePrice())}
               </Typography>
 
               <Box sx={{ 
@@ -402,9 +491,9 @@ const ProductCustomizer = () => {
                 {!isSaved ? (
                   <Button
                     variant="outlined"
-                    color="primary"
                     onClick={handleSaveDesign}
-                    startIcon={<SaveIcon />}
+                    startIcon={<FavoriteBorderIcon />}
+                    sx={buttonStyles.outlined}
                   >
                     {t('saveDesign')}
                   </Button>
@@ -413,19 +502,57 @@ const ProductCustomizer = () => {
                     variant="outlined"
                     color="error"
                     onClick={handleDeleteSavedDesign}
-                    startIcon={<DeleteIcon />}
+                    startIcon={<FavoriteIcon />}
+                    sx={{
+                      color: '#d32f2f',
+                      borderColor: '#d32f2f',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        color: '#c62828',
+                        borderColor: '#c62828',
+                        bgcolor: 'rgba(211, 47, 47, 0.08)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 8px rgba(211, 47, 47, 0.1)'
+                      }
+                    }}
                   >
                     {t('deleteDesign')}
                   </Button>
                 )}
-                <Button
-                  variant="outlined"
-                  onClick={handleViewSavedDesigns}
-                  startIcon={<FolderIcon />}
-                >
-                  {t('savedDesigns')}
-                </Button>
               </Box>
+
+              {/* Confirmation Dialog */}
+              <Dialog
+                open={openDialog}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {t('savedDesigns')}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    {t('viewSavedDesignsMessage')}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button 
+                    onClick={handleDialogClose} 
+                    sx={buttonStyles.outlined}
+                  >
+                    {t('no')}
+                  </Button>
+                  <Button 
+                    onClick={handleNavigateToSavedDesigns} 
+                    variant="contained"
+                    sx={buttonStyles.primary}
+                    autoFocus
+                  >
+                    {t('yes')}
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
           );
         default:
@@ -448,14 +575,10 @@ const ProductCustomizer = () => {
             onClick={handleBack}
             variant="outlined"
             sx={{
-              borderColor: '#008098',
-              color: '#008098',
-              '&:hover': {
-                borderColor: '#006d7f',
-                backgroundColor: 'rgba(0, 128, 152, 0.08)'
-              },
+              ...buttonStyles.outlined,
               '&.Mui-disabled': {
-                borderColor: '#e0e0e0'
+                borderColor: '#e0e0e0',
+                color: '#e0e0e0'
               }
             }}
           >
@@ -466,12 +589,10 @@ const ProductCustomizer = () => {
             onClick={handleNext}
             disabled={activeStep === steps.length - 1}
             sx={{
-              backgroundColor: '#008098',
-              '&:hover': {
-                backgroundColor: '#006d7f'
-              },
+              ...buttonStyles.primary,
               '&.Mui-disabled': {
-                backgroundColor: '#e0e0e0'
+                bgcolor: '#e0e0e0',
+                color: '#fff'
               }
             }}
           >
@@ -486,18 +607,46 @@ const ProductCustomizer = () => {
     return (
       <Box
         sx={{
+          height: '100vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh',
-          bgcolor: '#fff'
+          backgroundColor: '#fff'
         }}
       >
-        <CircularProgress size={60} />
-        <Typography variant="h6" sx={{ mt: 2 }}>
-          Model yükleniyor...
+        <Typography
+          variant="h2"
+          sx={{
+            color: theme => theme.palette.primary.main,
+            fontWeight: 'bold',
+            marginBottom: 3,
+            '@keyframes pulse': {
+              '0%': {
+                opacity: 1,
+                transform: 'scale(1)'
+              },
+              '50%': {
+                opacity: 0.7,
+                transform: 'scale(1.05)'
+              },
+              '100%': {
+                opacity: 1,
+                transform: 'scale(1)'
+              }
+            },
+            animation: 'pulse 2s infinite ease-in-out'
+          }}
+        >
+          Spiegel21
         </Typography>
+        <CircularProgress 
+          color="primary"
+          size={50}
+          sx={{
+            color: '#008098'
+          }}
+        />
       </Box>
     );
   }
@@ -805,6 +954,92 @@ const ProductCustomizer = () => {
           </motion.div>
         </Container>
       </motion.div>
+
+      {/* Scroll to Top Button */}
+      <Fab
+        color="primary"
+        size="large"
+        onClick={handleScrollTop}
+        sx={{
+          position: 'fixed',
+          bottom: 20,
+          right: 20,
+          opacity: showScrollTop ? 1 : 0,
+          transition: 'all 0.3s ease',
+          bgcolor: '#008098',
+          '&:hover': {
+            bgcolor: '#00907d',
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 8px rgba(0, 128, 152, 0.2)'
+          },
+          zIndex: 1000
+        }}
+      >
+        <KeyboardArrowUpIcon />
+      </Fab>
+
+      {/* İnsan modeli container'ı */}
+      <Box sx={{ position: 'relative' }}>
+        {showHuman && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              backgroundColor: 'white',
+              padding: 2,
+              borderRadius: 2,
+              boxShadow: 3,
+              zIndex: 900
+            }}
+          >
+            <FormControl component="fieldset" sx={{ mb: 2 }}>
+              <FormLabel component="legend">{t('gender')}</FormLabel>
+              <RadioGroup 
+                row 
+                value={humanGender}
+                onChange={(e) => setHumanGender(e.target.value)}
+              >
+                <FormControlLabel value="male" control={<Radio />} label={t('male')} />
+                <FormControlLabel value="female" control={<Radio />} label={t('female')} />
+              </RadioGroup>
+            </FormControl>
+            <Box sx={{ width: '100%', mb: 2 }}>
+              <Typography gutterBottom>{t('humanHeight')}</Typography>
+              <Slider
+                value={humanHeight}
+                onChange={(e, newValue) => setHumanHeight(newValue)}
+                min={150}
+                max={200}
+                step={1}
+                valueLabelDisplay="auto"
+                sx={{
+                  '& .MuiSlider-rail': {
+                    backgroundColor: '#e0e0e0',
+                  },
+                  '& .MuiSlider-track': {
+                    backgroundColor: '#008098',
+                  },
+                  '& .MuiSlider-thumb': {
+                    backgroundColor: '#008098',
+                  }
+                }}
+              />
+              <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', mt: 1 }}>
+                {humanHeight} cm
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              onClick={() => setShowHuman(false)}
+              fullWidth
+              sx={buttonStyles.outlined}
+            >
+              {t('showHuman')}
+            </Button>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

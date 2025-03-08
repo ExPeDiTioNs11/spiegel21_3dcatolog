@@ -12,10 +12,12 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const SavedDesigns = () => {
   const navigate = useNavigate();
   const [savedDesigns, setSavedDesigns] = useState([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Get all saved designs from localStorage
@@ -28,7 +30,7 @@ const SavedDesigns = () => {
         designs.push({
           productId,
           ...design,
-          savedAt: new Date().toLocaleDateString('tr-TR')
+          savedAt: new Date().toLocaleDateString()
         });
       }
     }
@@ -47,7 +49,7 @@ const SavedDesigns = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ mb: 6 }}>
-        Kayıtlı Tasarımlarım
+        {t('mySavedDesigns')}
       </Typography>
 
       {savedDesigns.length === 0 ? (
@@ -58,14 +60,14 @@ const SavedDesigns = () => {
           borderRadius: 2
         }}>
           <Typography variant="h6" color="text.secondary">
-            Henüz kayıtlı tasarımınız bulunmamaktadır.
+            {t('noSavedDesigns')}
           </Typography>
           <Button 
             variant="contained" 
             onClick={() => navigate('/')}
             sx={{ mt: 2 }}
           >
-            Tasarıma Başla
+            {t('startDesigning')}
           </Button>
         </Box>
       ) : (
@@ -75,16 +77,16 @@ const SavedDesigns = () => {
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Ayna Tasarımı #{design.productId}
+                    {t('mirrorDesign')} #{design.productId}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Boyutlar: {design.width}cm x {design.height}cm
+                    {t('dimensions')}: {design.width}cm x {design.height}cm
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Renk: {design.color}
+                    {t('color')}: {t(design.color)}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Kaydedilme Tarihi: {design.savedAt}
+                    {t('savedDate')}: {design.savedAt}
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'flex-end', gap: 1 }}>
@@ -94,7 +96,7 @@ const SavedDesigns = () => {
                     onClick={() => handleDelete(design.productId)}
                     color="error"
                   >
-                    Sil
+                    {t('delete')}
                   </Button>
                   <Button
                     size="small"
@@ -102,7 +104,7 @@ const SavedDesigns = () => {
                     onClick={() => handleEdit(design.productId)}
                     color="primary"
                   >
-                    Düzenle
+                    {t('edit')}
                   </Button>
                 </CardActions>
               </Card>

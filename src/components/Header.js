@@ -5,37 +5,16 @@ import {
   Toolbar,
   Typography,
   Button,
+  Box,
   IconButton,
-  Menu,
-  MenuItem,
-  Divider,
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
-import FolderIcon from '@mui/icons-material/Folder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { t, language, changeLanguage, setShowLocationModal } = useLanguage();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleLanguageClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleLanguageClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLanguageSelect = (lang) => {
-    changeLanguage(lang);
-    handleLanguageClose();
-  };
-
-  const handleLocationSettings = () => {
-    setShowLocationModal(true);
-    handleLanguageClose();
-  };
+  const { t, language, setShowLocationModal } = useLanguage();
 
   return (
     <AppBar 
@@ -63,7 +42,7 @@ const Header = () => {
           Spiegel21
         </Typography>
         <Button
-          startIcon={<FolderIcon />}
+          startIcon={<FavoriteIcon />}
           onClick={() => navigate('/saved-designs')}
           sx={{ 
             color: '#008098',
@@ -74,83 +53,21 @@ const Header = () => {
         >
           {t('savedDesigns')}
         </Button>
-        <IconButton
-          color="inherit"
-          onClick={handleLanguageClick}
-          size="large"
-        >
-          <LanguageIcon />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleLanguageClose}
-          PaperProps={{
-            sx: {
-              maxHeight: '400px',
-              width: '200px'
+        <Button
+          onClick={() => setShowLocationModal(true)}
+          sx={{
+            color: '#008098',
+            minWidth: 'auto',
+            padding: '6px 12px',
+            ml: 1,
+            '&:hover': {
+              backgroundColor: 'rgba(0, 128, 152, 0.08)'
             }
           }}
+          startIcon={<LanguageIcon />}
         >
-          <MenuItem
-            onClick={() => handleLanguageSelect('de')}
-            selected={language === 'de'}
-          >
-            Deutsch
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('en')}
-            selected={language === 'en'}
-          >
-            English
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('tr')}
-            selected={language === 'tr'}
-          >
-            Türkçe
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('fr')}
-            selected={language === 'fr'}
-          >
-            Français
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('it')}
-            selected={language === 'it'}
-          >
-            Italiano
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('es')}
-            selected={language === 'es'}
-          >
-            Español
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('nl')}
-            selected={language === 'nl'}
-          >
-            Nederlands
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('pl')}
-            selected={language === 'pl'}
-          >
-            Polski
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleLanguageSelect('pt')}
-            selected={language === 'pt'}
-          >
-            Português
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={handleLocationSettings}>
-            {t('selectLocation')}
-          </MenuItem>
-        </Menu>
+          {language.toUpperCase()}
+        </Button>
       </Toolbar>
     </AppBar>
   );

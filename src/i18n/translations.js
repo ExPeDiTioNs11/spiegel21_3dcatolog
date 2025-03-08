@@ -89,6 +89,38 @@ export const translations = {
     female: 'Weiblich',
     humanHeight: 'Körpergröße',
     showHuman: 'Menschliche Figur anzeigen',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Möchten Sie Ihre gespeicherten Designs anzeigen?',
+    yes: 'Ja',
+    no: 'Nein',
+
+    mySavedDesigns: 'Meine gespeicherten Designs',
+    noSavedDesigns: 'Sie haben noch keine gespeicherten Designs.',
+    startDesigning: 'Mit dem Design beginnen',
+    mirrorDesign: 'Spiegeldesign',
+    savedDate: 'Gespeichert am',
+    edit: 'Bearbeiten',
+
+    // Slider Content
+    modernMirrorsTitle: 'Moderne Spiegel',
+    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
+    smartMirrorsTitle: 'Intelligente Spiegel',
+    smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth-Lautsprecher',
+    minimalDesign: 'Minimales Design',
+    easyMount: 'Einfache Montage',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modernes Spiegeldesign',
+    classicMirrorDesc: 'Klassisches Spiegeldesign',
+    simpleMirrorDesc: 'Schlichtes Spiegeldesign',
+
+    details: 'Details',
+
+    loadingHuman: 'Menschliche Figur wird geladen...',
   },
   en: {
     // Navigation
@@ -180,6 +212,39 @@ export const translations = {
     female: 'Female',
     humanHeight: 'Height',
     showHuman: 'Show Human Figure',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Would you like to view your saved designs?',
+    yes: 'Yes',
+    no: 'No',
+
+    mySavedDesigns: 'My Saved Designs',
+    noSavedDesigns: 'You don\'t have any saved designs yet.',
+    startDesigning: 'Start Designing',
+    mirrorDesign: 'Mirror Design',
+    savedDate: 'Saved Date',
+    delete: 'Delete',
+    edit: 'Edit',
+
+    // Slider Content
+    modernMirrorsTitle: 'Modern Mirrors',
+    modernMirrorsDesc: 'Add elegance to your home',
+    smartMirrorsTitle: 'Smart Mirrors',
+    smartMirrorsDesc: 'Where technology meets design',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth Speaker',
+    minimalDesign: 'Minimal Design',
+    easyMount: 'Easy Mount',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modern mirror design',
+    classicMirrorDesc: 'Classic mirror design',
+    simpleMirrorDesc: 'Simple mirror design',
+
+    details: 'Details',
+
+    loadingHuman: 'Loading human figure...',
   },
   tr: {
     // Navigation
@@ -267,6 +332,39 @@ export const translations = {
     female: 'Kadın',
     humanHeight: 'Boy',
     showHuman: 'İnsan Figürünü Göster',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Kayıtlı tasarımlarınızı görüntülemek ister misiniz?',
+    yes: 'Evet',
+    no: 'Hayır',
+
+    mySavedDesigns: 'Kayıtlı Tasarımlarım',
+    noSavedDesigns: 'Henüz kayıtlı tasarımınız bulunmamaktadır.',
+    startDesigning: 'Tasarıma Başla',
+    mirrorDesign: 'Ayna Tasarımı',
+    savedDate: 'Kaydedilme Tarihi',
+    delete: 'Sil',
+    edit: 'Düzenle',
+
+    // Slider Content
+    modernMirrorsTitle: 'Modern Aynalar',
+    modernMirrorsDesc: 'Evinize şıklık katın',
+    smartMirrorsTitle: 'Akıllı Aynalar',
+    smartMirrorsDesc: 'Teknoloji ve tasarımın buluşması',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth Hoparlör',
+    minimalDesign: 'Minimal Tasarım',
+    easyMount: 'Kolay Montaj',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modern tasarım ayna',
+    classicMirrorDesc: 'Klasik tasarım ayna',
+    simpleMirrorDesc: 'Sade tasarım ayna',
+
+    details: 'Detaylar',
+
+    loadingHuman: 'İnsan modeli yükleniyor...',
   },
   fr: {
     // Navigation
@@ -355,6 +453,23 @@ export const translations = {
     female: 'Femme',
     humanHeight: 'Taille',
     showHuman: 'Afficher la silhouette humaine',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Voulez-vous voir vos designs sauvegardés?',
+    yes: 'Oui',
+    no: 'Non',
+
+    mySavedDesigns: 'Mes designs sauvegardés',
+    noSavedDesigns: 'Vous n\'avez pas encore de designs sauvegardés.',
+    startDesigning: 'Commencer la conception',
+    mirrorDesign: 'Design de miroir',
+    savedDate: 'Date de sauvegarde',
+    delete: 'Supprimer',
+    edit: 'Modifier',
+
+    details: 'Détails',
+
+    loadingHuman: 'Chargement de la figure humaine...',
   },
   it: {
     // Navigation
@@ -424,7 +539,7 @@ export const translations = {
     heroDescription: 'All\'intersezione tra tecnologia moderna e design elegante, offriamo design di specchi personalizzati.',
     startDesigning: 'Inizia a progettare',
     featuresTitle: 'Le nostre caratteristiche',
-    feature1Title: 'Design personalizzabile',
+    feature1Title: 'Personalizabile design',
     feature1Description: 'Personalizza dimensioni, colore e dettagli secondo le tue preferenze.',
     feature2Title: 'Qualità professionale',
     feature2Description: 'Materiali della più alta qualità e lavorazione esperta.',
@@ -443,6 +558,23 @@ export const translations = {
     female: 'Donna',
     humanHeight: 'Altezza',
     showHuman: 'Mostra figura umana',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Vuoi visualizzare i tuoi design salvati?',
+    yes: 'Sì',
+    no: 'No',
+
+    mySavedDesigns: 'I miei design salvati',
+    noSavedDesigns: 'Non hai ancora design salvati.',
+    startDesigning: 'Inizia a progettare',
+    mirrorDesign: 'Design specchio',
+    savedDate: 'Data di salvataggio',
+    delete: 'Elimina',
+    edit: 'Modifica',
+
+    details: 'Dettagli',
+
+    loadingHuman: 'Caricamento della figura umana...',
   },
   es: {
     // Navigation
@@ -531,6 +663,23 @@ export const translations = {
     female: 'Mujer',
     humanHeight: 'Altura',
     showHuman: 'Mostrar figura humana',
+
+    // New dialog messages
+    viewSavedDesignsMessage: '¿Te gustaría ver tus diseños guardados?',
+    yes: 'Sí',
+    no: 'No',
+
+    mySavedDesigns: 'Mis diseños guardados',
+    noSavedDesigns: 'Aún no tienes diseños guardados.',
+    startDesigning: 'Empezar a diseñar',
+    mirrorDesign: 'Diseño de espejo',
+    savedDate: 'Fecha de guardado',
+    delete: 'Eliminar',
+    edit: 'Editar',
+
+    details: 'Detalles',
+
+    loadingHuman: 'Cargando figura humana...',
   },
   nl: {
     // Navigation
@@ -619,6 +768,39 @@ export const translations = {
     female: 'Vrouw',
     humanHeight: 'Lengte',
     showHuman: 'Toon menselijke figuur',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Wil je je opgeslagen ontwerpen bekijken?',
+    yes: 'Ja',
+    no: 'Nee',
+
+    mySavedDesigns: 'Mijn opgeslagen ontwerpen',
+    noSavedDesigns: 'Je hebt nog geen opgeslagen ontwerpen.',
+    startDesigning: 'Begin met ontwerpen',
+    mirrorDesign: 'Spiegelontwerp',
+    savedDate: 'Opgeslagen datum',
+    delete: 'Verwijderen',
+    edit: 'Bewerken',
+
+    // Slider Content
+    modernMirrorsTitle: 'Moderne Spiegel',
+    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
+    smartMirrorsTitle: 'Intelligente Spiegel',
+    smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth-Lautsprecher',
+    minimalDesign: 'Minimales Design',
+    easyMount: 'Einfache Montage',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modernes Spiegeldesign',
+    classicMirrorDesc: 'Klassisches Spiegeldesign',
+    simpleMirrorDesc: 'Schlichtes Spiegeldesign',
+
+    details: 'Details',
+
+    loadingHuman: 'Menselijke figuur laden...',
   },
   pl: {
     // Navigation
@@ -707,6 +889,39 @@ export const translations = {
     female: 'Kobieta',
     humanHeight: 'Wysokość',
     showHuman: 'Pokaż sylwetkę człowieka',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Czy chcesz zobaczyć swoje zapisane projekty?',
+    yes: 'Tak',
+    no: 'Nie',
+
+    mySavedDesigns: 'Moje zapisane projekty',
+    noSavedDesigns: 'Nie masz jeszcze zapisanych projektów.',
+    startDesigning: 'Rozpocznij projektowanie',
+    mirrorDesign: 'Projekt lustra',
+    savedDate: 'Data zapisu',
+    delete: 'Usuń',
+    edit: 'Edytuj',
+
+    // Slider Content
+    modernMirrorsTitle: 'Moderne Spiegel',
+    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
+    smartMirrorsTitle: 'Intelligente Spiegel',
+    smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth-Lautsprecher',
+    minimalDesign: 'Minimales Design',
+    easyMount: 'Einfache Montage',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modernes Spiegeldesign',
+    classicMirrorDesc: 'Klassisches Spiegeldesign',
+    simpleMirrorDesc: 'Schlichtes Spiegeldesign',
+
+    details: 'Szczegóły',
+
+    loadingHuman: 'Ładowanie postaci ludzkiej...',
   },
   pt: {
     // Navigation
@@ -795,5 +1010,38 @@ export const translations = {
     female: 'Feminino',
     humanHeight: 'Altura',
     showHuman: 'Mostrar figura humana',
+
+    // New dialog messages
+    viewSavedDesignsMessage: 'Gostaria de ver seus designs salvos?',
+    yes: 'Sim',
+    no: 'Não',
+
+    mySavedDesigns: 'Meus designs salvos',
+    noSavedDesigns: 'Você ainda não tem designs salvos.',
+    startDesigning: 'Começar a projetar',
+    mirrorDesign: 'Design do espelho',
+    savedDate: 'Data de salvamento',
+    delete: 'Excluir',
+    edit: 'Editar',
+
+    // Slider Content
+    modernMirrorsTitle: 'Moderne Spiegel',
+    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
+    smartMirrorsTitle: 'Intelligente Spiegel',
+    smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
+
+    // Product Features
+    bluetoothSpeaker: 'Bluetooth-Lautsprecher',
+    minimalDesign: 'Minimales Design',
+    easyMount: 'Einfache Montage',
+
+    // Product Descriptions
+    modernMirrorDesc: 'Modernes Spiegeldesign',
+    classicMirrorDesc: 'Klassisches Spiegeldesign',
+    simpleMirrorDesc: 'Schlichtes Spiegeldesign',
+
+    details: 'Detalhes',
+
+    loadingHuman: 'Carregando figura humana...',
   }
 }; 
