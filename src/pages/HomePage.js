@@ -83,7 +83,7 @@ const HomePage = () => {
   // Get translated content
   const sliderContent = getSliderContent(t);
   
-  // Ayna ürünlerini al
+  // get mirrors products
   const mirrors = getProductsByCategory('mirrors');
 
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);

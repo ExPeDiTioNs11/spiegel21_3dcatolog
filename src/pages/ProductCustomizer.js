@@ -418,20 +418,21 @@ const ProductCustomizer = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <Card 
+                    <Card
                       sx={{ 
                         cursor: 'pointer',
                         transition: 'all 0.3s ease',
                         position: 'relative',
                         overflow: 'hidden',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minHeight: '400px',
                         '&:hover': {
                           transform: 'translateY(-8px)',
                           boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
-                          '& .product-overlay': {
-                            opacity: 1
-                          },
-                          '& .product-details': {
-                            transform: 'translateY(0)'
+                          '& .product-image': {
+                            transform: 'scale(1.05)'
                           }
                         }
                       }}
@@ -439,32 +440,55 @@ const ProductCustomizer = () => {
                     >
                       <CardMedia
                         component="img"
-                        height="280"
+                        height="320"
                         image={product.thumbnail}
                         alt={product.name}
+                        className="product-image"
                         sx={{
                           transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'scale(1.05)'
-                          }
+                          objectFit: 'cover',
+                          height: '320px'
                         }}
                       />
-                      {/* Overlay with details */}
-                      <Box className="product-overlay" sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        bgcolor: 'rgba(0,128,152,0.95)',
-                        color: 'white',
-                        p: 2,
-                        transform: 'translateY(0)',
-                        transition: 'all 0.3s ease',
-                      }}>
-                        <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                      {/* Product details */}
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          bgcolor: 'rgba(0,128,152,0.9)',
+                          color: 'white',
+                          p: 2,
+                          backdropFilter: 'blur(4px)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 0.5,
+                          transform: 'translateY(0)',
+                          transition: 'transform 0.3s ease'
+                        }}>
+                        <Typography 
+                          variant="h6" 
+                          sx={{ 
+                            fontWeight: 'bold',
+                            fontSize: '1rem',
+                            lineHeight: 1.2,
+                            mb: 0.5
+                          }}>
                           {product.name}
                         </Typography>
-                        <Typography variant="body2" sx={{ mb: 2, opacity: 0.9 }}>
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            opacity: 0.9,
+                            fontSize: '0.85rem',
+                            lineHeight: 1.3,
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            mb: 1
+                          }}>
                           {product.description}
                         </Typography>
                         <Box sx={{ 
@@ -472,7 +496,12 @@ const ProductCustomizer = () => {
                           justifyContent: 'space-between',
                           alignItems: 'center'
                         }}>
-                          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                          <Typography 
+                            variant="h6" 
+                            sx={{ 
+                              fontWeight: 'bold',
+                              fontSize: '1rem'
+                            }}>
                             {formatPrice(product.price)}
                           </Typography>
                           <Button 
@@ -481,6 +510,7 @@ const ProductCustomizer = () => {
                             sx={{
                               bgcolor: 'white',
                               color: '#008098',
+                              minWidth: '80px',
                               '&:hover': {
                                 bgcolor: 'rgba(255,255,255,0.9)'
                               }

@@ -1,22 +1,63 @@
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, useTexture, useFBX } from "@react-three/drei";
 import { CircularProgress, Box, Alert, Button, Grid } from "@mui/material";
 import MeasurementRuler from "./MeasurementRuler";
 import HumanFigure from './HumanFigure';
 import HumanControls from './HumanControls';
 import GuideLines from './GuideLines';
 import { useLanguage } from '../i18n/LanguageContext';
+import * as THREE from 'three';
+
+// Table model component
+const TableModel = () => {
+  const fbx = useFBX('/models/roomsDesing/models/gallinera_table_4k.fbx');
+  const texture = useTexture('/models/roomsDesing/models/gallinera_table_diff_4k.jpg');
+  
+  // Model ayarları
+  const scale = 0.02;
+  const position = [0, -1, -1.8];
+
+  // FBX modelinin tüm mesh'lerine texture'ı uygula
+  fbx.traverse((child) => {
+    if (child.isMesh) {
+      child.material.map = texture;
+      child.material.needsUpdate = true;
+    }
+  });
+
+  return (
+    <primitive 
+      object={fbx} 
+      scale={[scale, scale, scale]}
+      position={position}
+      rotation={[0, Math.PI, 0]}
+      castShadow
+      receiveShadow
+    />
+  );
+};
 
 // Bathroom environment component
 const BathroomEnvironment = () => {
+  const wallTexture = useTexture('/models/roomsDesing/texture/wall1_texture.jpg');
+  const groundTexture = useTexture('/models/roomsDesing/texture/ground1_texture.jpg');
+  
+  wallTexture.wrapS = THREE.RepeatWrapping;
+  wallTexture.wrapT = THREE.RepeatWrapping;
+  wallTexture.repeat.set(2, 2);
+
+  groundTexture.wrapS = THREE.RepeatWrapping;
+  groundTexture.wrapT = THREE.RepeatWrapping;
+  groundTexture.repeat.set(4, 2); // Zeminde daha fazla tekrar için
+
   return (
     <group>
       {/* Back wall */}
       <mesh position={[0, 1.5, -2.5]} rotation={[0, 0, 0]}>
         <planeGeometry args={[10, 5]} />
         <meshStandardMaterial
-          color="#E0E0E0"
+          map={wallTexture}
           roughness={0.7}
           metalness={0.1}
         />
@@ -26,7 +67,7 @@ const BathroomEnvironment = () => {
       <mesh position={[-5, 1.5, 0]} rotation={[0, Math.PI / 2, 0]}>
         <planeGeometry args={[5, 5]} />
         <meshStandardMaterial
-          color="#F5F5F5"
+          map={wallTexture}
           roughness={0.7}
           metalness={0.1}
         />
@@ -36,7 +77,17 @@ const BathroomEnvironment = () => {
       <mesh position={[5, 1.5, 0]} rotation={[0, -Math.PI / 2, 0]}>
         <planeGeometry args={[5, 5]} />
         <meshStandardMaterial
-          color="#F5F5F5"
+          map={wallTexture}
+          roughness={0.7}
+          metalness={0.1}
+        />
+      </mesh>
+
+      {/* Front wall (behind camera) */}
+      <mesh position={[0, 1.5, 2.5]} rotation={[0, Math.PI, 0]}>
+        <planeGeometry args={[10, 5]} />
+        <meshStandardMaterial
+          map={wallTexture}
           roughness={0.7}
           metalness={0.1}
         />
@@ -46,11 +97,16 @@ const BathroomEnvironment = () => {
       <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[10, 5]} />
         <meshStandardMaterial
-          color="#E0E0E0"
+          map={groundTexture}
           roughness={0.8}
           metalness={0.2}
         />
       </mesh>
+
+      {/* Table Model */}
+      <Suspense fallback={null}>
+        <TableModel />
+      </Suspense>
     </group>
   );
 };
@@ -218,7 +274,8 @@ const Scene = ({ selectedModel, modelSettings }) => {
             {showHuman && (
               <HumanFigure 
                 height={humanHeight}
-                position={[0.8, -1, -1.8]}
+                position={[1.5, -1, -1.8]}
+                rotation={[0, -Math.PI / 4, 0]}
               />
             )}
             {showGuideLines && (
