@@ -209,7 +209,7 @@ const ProductCustomizer = () => {
   }, [productId]);
 
   useEffect(() => {
-    // Sayfa yükleme efekti
+    // Page loading effect
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -247,7 +247,7 @@ const ProductCustomizer = () => {
     }));
   };
 
-  // Base price state'ini ekleyelim
+  // Base price state
   const [basePrice, setBasePrice] = useState(299);
 
   // Update price calculations with dynamic base price
@@ -305,13 +305,13 @@ const ProductCustomizer = () => {
   const handleShowHuman = () => {
     setIsHumanLoading(true);
     setShowHuman(!showHuman);
-    // İnsan modeli yüklenme simülasyonu
+    // Human model loading simulation
     setTimeout(() => {
       setIsHumanLoading(false);
     }, 1000);
   };
 
-  // Ürün modalını açma/kapama fonksiyonları
+  // Functions for opening/closing product modal
   const handleOpenProductModal = () => {
     setIsProductModalOpen(true);
   };
@@ -320,14 +320,14 @@ const ProductCustomizer = () => {
     setIsProductModalOpen(false);
   };
 
-  // Ürün seçme fonksiyonu
+  // Product selection function
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
-    // Stepper'ı sıfırla
+    // Reset stepper
     setActiveStep(0);
-    // Kayıtlı tasarım durumunu sıfırla
+    // Reset saved design state
     setIsSaved(false);
-    // Model ayarlarını sıfırla
+    // Reset model settings
     setModelSettings({
       width: 100,
       height: 150,
@@ -336,21 +336,21 @@ const ProductCustomizer = () => {
       scaleZ: 0.1,
       color: colors[0].id,
     });
-    // Base price'ı yeni ürüne göre güncelle
+    // Update base price for new product
     setBasePrice(product.price);
-    // Loading durumunu aktifleştir
+    // Activate loading state
     setIsLoading(true);
-    // Yeni ürüne yönlendir
+    // Navigate to new product
     navigate(`/product/${product.id}`, { replace: true });
     handleCloseProductModal();
     
-    // Yeni ürün yüklenme efekti
+    // Loading effect for new product
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
   };
 
-  // Ürün modalı içeriği
+  // Product modal content
   const ProductSelectionModal = () => {
     const mirrors = getProductsByCategory('mirrors');
 
@@ -501,7 +501,7 @@ const ProductCustomizer = () => {
     );
   };
 
-  // Menü butonunu ekleyelim
+  // Add menu button
   const MenuButton = () => (
     <Tooltip 
       title={t('otherModels')} 

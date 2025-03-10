@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Ürün verilerini tanımlıyoruz
+// Defining product data
 const initialProducts = {
     mirrors: [
         {
             id: 'Bolnuevo',
             modelName: 'Bolnuevo',
             name: 'Bolnuevo',
-            description: 'Modern tasarımlı şık ayna',
+            description: 'Modern designed elegant mirror',
             price: 299,
             thumbnail: '/images/Bolnuevo.jpg',
             features: ['ledLighting', 'antiFog', 'smartSensor']
@@ -16,7 +16,7 @@ const initialProducts = {
             id: 'm01l2v',
             modelName: 'm01l2v',
             name: 'Classic',
-            description: 'Klasik tasarım, modern teknoloji',
+            description: 'Classic design with modern technology',
             price: 349,
             thumbnail: '/images/M01L2V.jpg',
             features: ['ledLighting', 'antiFog', 'bluetoothSpeaker']
@@ -25,7 +25,7 @@ const initialProducts = {
             id: 'SimpleMirror',
             modelName: 'SimpleMirror',
             name: 'Simple',
-            description: 'Sade ve şık tasarım',
+            description: 'Simple and elegant design',
             price: 249,
             thumbnail: '/images/Aurora.jpg',
             features: ['ledLighting', 'minimalDesign', 'easyMount']
@@ -33,19 +33,19 @@ const initialProducts = {
     ]
 };
 
-// Context'i oluşturuyoruz
+// Creating the context
 const ProductContext = createContext();
 
-// Context Provider bileşeni
+// Context Provider component
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState(initialProducts);
 
-    // Ürünleri kategori bazında getiren fonksiyon
+    // Function to get products by category
     const getProductsByCategory = (category) => {
         return products[category] || [];
     };
 
-    // Tek bir ürünü ID'ye göre getiren fonksiyon
+    // Function to get a single product by ID
     const getProductById = (productId) => {
         for (const category in products) {
             const product = products[category].find(p => p.id === productId);
@@ -54,7 +54,7 @@ export const ProductProvider = ({ children }) => {
         return null;
     };
 
-    // Yeni ürün ekleme fonksiyonu
+    // Function to add new product
     const addProduct = (category, product) => {
         setProducts(prev => ({
             ...prev,
@@ -62,7 +62,7 @@ export const ProductProvider = ({ children }) => {
         }));
     };
 
-    // Ürün güncelleme fonksiyonu
+    // Function to update product
     const updateProduct = (category, productId, updatedProduct) => {
         setProducts(prev => ({
             ...prev,
@@ -72,7 +72,7 @@ export const ProductProvider = ({ children }) => {
         }));
     };
 
-    // Ürün silme fonksiyonu
+    // Function to delete product
     const deleteProduct = (category, productId) => {
         setProducts(prev => ({
             ...prev,

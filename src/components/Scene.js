@@ -59,10 +59,10 @@ const BathroomEnvironment = () => {
 const Lighting = () => {
   return (
     <>
-      {/* Genel ortam ışığı */}
+      {/* Ambient light */}
       <ambientLight intensity={0.5} />
 
-      {/* Ana ışık kaynağı (pencereden gelen güneş ışığı gibi) */}
+      {/* Main light source (simulating sunlight through window) */}
       <directionalLight
         position={[8, 8, 4]}
         intensity={0.8}
@@ -77,7 +77,7 @@ const Lighting = () => {
         shadow-camera-bottom={-10}
       />
 
-      {/* Tavandan gelen yumuşak ışıklar */}
+      {/* Soft ceiling lights */}
       <pointLight 
         position={[0, 6, -4]}
         intensity={0.3}
@@ -93,7 +93,7 @@ const Lighting = () => {
         decay={2}
       />
 
-      {/* Ayna için özel spot ışık */}
+      {/* Dedicated spotlight for mirror */}
       <spotLight
         position={[0, 4, 2]}
         angle={Math.PI / 4}
@@ -107,7 +107,7 @@ const Lighting = () => {
         decay={1.5}
       />
 
-      {/* Dolgu ışıkları */}
+      {/* Fill lights */}
       <pointLight 
         position={[-4, 3, -3]}
         intensity={0.25}
@@ -173,7 +173,7 @@ const Scene = ({ selectedModel, modelSettings }) => {
       setModelComponent(() => modelComponent.default);
     } catch (err) {
       console.error("Error loading model:", err);
-      setError(`Model yüklenirken bir hata oluştu (${selectedModel}). Lütfen sayfayı yenileyin veya başka bir model seçin.`);
+      setError(`Error loading model (${selectedModel}). Please refresh the page or select another model.`);
     } finally {
       setIsLoading(false);
     }
