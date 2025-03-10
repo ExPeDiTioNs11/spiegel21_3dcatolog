@@ -30,6 +30,9 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import BluetoothIcon from '@mui/icons-material/Bluetooth';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import HandymanIcon from '@mui/icons-material/Handyman';
+import PaletteIcon from '@mui/icons-material/Palette';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { useProducts } from '../context/ProductContext';
 
 // Feature icons mapping
@@ -522,93 +525,7 @@ const HomePage = () => {
         style={{ y: parallaxY }}
         sx={{ position: 'relative', zIndex: 1 }}
       >
-        <Box sx={{ bgcolor: '#f8f8f8', py: { xs: 8, md: 12 } }}>
-          <Container maxWidth="xl">
-            <Typography
-              variant="h2"
-              sx={{
-                fontSize: { xs: '2rem', md: '3rem' },
-                fontWeight: 700,
-                mb: 8,
-                textAlign: 'center',
-                color: '#1a1a1a'
-              }}
-            >
-              {t('featuresTitle')}
-            </Typography>
-            <Grid container spacing={6}>
-              {[
-                {
-                  title: t('feature1Title'),
-                  description: t('feature1Description'),
-                  image: '/images/feature1.jpg'
-                },
-                {
-                  title: t('feature2Title'),
-                  description: t('feature2Description'),
-                  image: '/images/feature2.jpg'
-                },
-                {
-                  title: t('feature3Title'),
-                  description: t('feature3Description'),
-                  image: '/images/feature3.jpg'
-                }
-              ].map((feature, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                  >
-                    <Box
-                      sx={{
-                        height: 300,
-                        mb: 3,
-                        overflow: 'hidden',
-                        position: 'relative'
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={feature.image}
-                        alt={feature.title}
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          transition: 'transform 0.6s ease-in-out',
-                          '&:hover': {
-                            transform: 'scale(1.05)'
-                          }
-                        }}
-                      />
-                    </Box>
-                    <Typography
-                      variant="h5"
-                      gutterBottom
-                      sx={{
-                        fontWeight: 600,
-                        color: '#1a1a1a'
-                      }}
-                    >
-                      {feature.title}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: '#666',
-                        lineHeight: 1.6
-                      }}
-                    >
-                      {feature.description}
-                    </Typography>
-                  </motion.div>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
+        <Features />
       </motion.div>
 
       {/* Scroll to Top Button */}
@@ -633,6 +550,110 @@ const HomePage = () => {
       >
         <KeyboardArrowUpIcon />
       </Fab>
+    </Box>
+  );
+};
+
+// Features section
+const Features = () => {
+  const { t } = useLanguage();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const features = [
+    {
+      icon: PaletteIcon,
+      title: t('feature1Title'),
+      description: t('feature1Description'),
+      color: '#008098'
+    },
+    {
+      icon: VerifiedIcon,
+      title: t('feature2Title'),
+      description: t('feature2Description'),
+      color: '#008098'
+    },
+    {
+      icon: LocalShippingIcon,
+      title: t('feature3Title'),
+      description: t('feature3Description'),
+      color: '#008098'
+    }
+  ];
+
+  return (
+    <Box sx={{ py: 8, bgcolor: '#f5f5f5' }}>
+      <Container maxWidth="lg">
+        <Typography
+          variant="h2"
+          align="center"
+          gutterBottom
+          sx={{
+            mb: 6,
+            fontWeight: 600,
+            fontSize: { xs: '2rem', md: '2.5rem' }
+          }}
+        >
+          {t('featuresTitle')}
+        </Typography>
+        <Grid container spacing={4}>
+          {features.map((feature, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  p: 3,
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                    bgcolor: `${feature.color}15`,
+                    color: feature.color
+                  }}
+                >
+                  <feature.icon sx={{ fontSize: 40 }} />
+                </Box>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 600,
+                    mb: 2
+                  }}
+                >
+                  {feature.title}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{
+                    maxWidth: 300,
+                    mx: 'auto'
+                  }}
+                >
+                  {feature.description}
+                </Typography>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </Box>
   );
 };
