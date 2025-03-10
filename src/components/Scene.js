@@ -15,11 +15,11 @@ const TableModel = () => {
   const fbx = useFBX('/models/roomsDesing/models/gallinera_table_4k.fbx');
   const texture = useTexture('/models/roomsDesing/models/gallinera_table_diff_4k.jpg');
   
-  // Model ayarları
+  // Model settings
   const scale = 0.02;
   const position = [0, -1, -1.8];
 
-  // FBX modelinin tüm mesh'lerine texture'ı uygula
+  // Apply texture to all meshes of the FBX model
   fbx.traverse((child) => {
     if (child.isMesh) {
       child.material.map = texture;
