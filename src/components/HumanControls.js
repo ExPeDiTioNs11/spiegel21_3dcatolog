@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Slider,
   Typography,
   IconButton,
   Popover,
+  CircularProgress,
 } from '@mui/material';
 import { Height, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -17,6 +18,7 @@ export default function HumanControls({
 }) {
   const { t } = useLanguage();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = (event) => {
     if (!isVisible) {
@@ -29,7 +31,13 @@ export default function HumanControls({
     setAnchorEl(null);
   };
 
-  const toggleVisibility = () => {
+  const toggleVisibility = async () => {
+    if (!isVisible) {
+      setIsLoading(true);
+      // Simulate loading time
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setIsLoading(false);
+    }
     setIsVisible(!isVisible);
     if (!isVisible) {
       setAnchorEl(null);
@@ -56,16 +64,34 @@ export default function HumanControls({
 
       <IconButton
         onClick={toggleVisibility}
+        disabled={isLoading}
         sx={{
-          backgroundColor: 'background.paper',
-          color: 'text.primary',
+          backgroundColor: isVisible ? 'primary.main' : 'background.paper',
+          color: isVisible ? 'white' : 'text.primary',
           '&:hover': {
-            backgroundColor: 'background.default',
+            backgroundColor: isVisible ? 'primary.dark' : 'background.default',
           },
           boxShadow: 2,
+          position: 'relative',
+          width: 40,
+          height: 40,
         }}
       >
-        {isVisible ? <VisibilityOff /> : <Visibility />}
+        {isLoading ? (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: isVisible ? 'white' : 'primary.main',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        ) : (
+          isVisible ? <VisibilityOff /> : <Visibility />
+        )}
       </IconButton>
 
       <Popover

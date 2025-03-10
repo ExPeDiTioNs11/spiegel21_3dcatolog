@@ -186,7 +186,7 @@ const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines
   const [ModelComponent, setModelComponent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showHuman, setShowHuman] = useState(true);
+  const [showHuman, setShowHuman] = useState(false);
   const [humanHeight, setHumanHeight] = useState(170);
   const [isLightsDimmed, setIsLightsDimmed] = useState(false);
 
@@ -293,8 +293,8 @@ const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines
             {showHuman && (
               <HumanFigure 
                 height={humanHeight}
-                position={[1.5, -1, -1.8]}
-                rotation={[0, -Math.PI / 4, 0]}
+                position={[1.5, -1, -1.4]}
+                rotation={[0, Math.PI / 4, 0]}
               />
             )}
             {showGuideLines && (

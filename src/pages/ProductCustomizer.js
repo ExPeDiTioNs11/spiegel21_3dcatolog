@@ -141,6 +141,7 @@ const ProductCustomizer = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModelLoading, setIsModelLoading] = useState(false);
   const [isHumanLoading, setIsHumanLoading] = useState(false);
   const [modelError, setModelError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -186,6 +187,7 @@ const ProductCustomizer = () => {
   useEffect(() => {
     const initializeProduct = async () => {
       setIsLoading(true);
+      setIsModelLoading(true);
       setModelError(null);
       try {
         // Check if there's a saved design
@@ -203,6 +205,7 @@ const ProductCustomizer = () => {
         setModelError('Ürün yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
       } finally {
         setIsLoading(false);
+        setIsModelLoading(false);
       }
     };
 
@@ -303,13 +306,12 @@ const ProductCustomizer = () => {
     });
   };
 
-  const handleShowHuman = () => {
+  const handleShowHuman = async (event) => {
     setIsHumanLoading(true);
-    setShowHuman(!showHuman);
-    // Human model loading simulation
-    setTimeout(() => {
-      setIsHumanLoading(false);
-    }, 1000);
+    setShowHuman(event.target.checked);
+    // Simulate human model loading time
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsHumanLoading(false);
   };
 
   // Functions for opening/closing product modal
@@ -988,11 +990,60 @@ const ProductCustomizer = () => {
             minHeight: isDesktop ? 'auto' : '400px'
           }}>
             <Box sx={{ height: '100%', position: 'relative' }}>
+              {isModelLoading && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    zIndex: 1000,
+                  }}
+                >
+                  <Box sx={{ textAlign: 'center' }}>
+                    <CircularProgress size={60} sx={{ color: 'primary.main', mb: 2 }} />
+                    <Typography variant="h6" color="primary">
+                      {t('loadingModel')}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+              {isHumanLoading && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    zIndex: 1000,
+                  }}
+                >
+                  <Box sx={{ textAlign: 'center' }}>
+                    <CircularProgress size={60} sx={{ color: 'primary.main', mb: 2 }} />
+                    <Typography variant="h6" color="primary">
+                      {t('loadingHuman')}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
               <Scene 
                 selectedModel={productId} 
                 modelSettings={modelSettings}
                 showGuideLines={showGuideLines}
                 setShowGuideLines={setShowGuideLines}
+                showHuman={showHuman}
+                humanGender={humanGender}
+                humanHeight={humanHeight}
               />
             </Box>
           </Grid>

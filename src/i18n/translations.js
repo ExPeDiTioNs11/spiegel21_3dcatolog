@@ -120,6 +120,7 @@ export const translations = {
 
     details: 'Details',
 
+    loadingModel: '3D-Modell wird geladen...',
     loadingHuman: 'Menschliche Figur wird geladen...',
 
     otherModels: 'Andere Modelle',
@@ -246,6 +247,7 @@ export const translations = {
 
     details: 'Details',
 
+    loadingModel: 'Loading 3D model...',
     loadingHuman: 'Loading human figure...',
 
     otherModels: 'Other Models',
@@ -368,6 +370,7 @@ export const translations = {
 
     details: 'Detaylar',
 
+    loadingModel: '3D model yükleniyor...',
     loadingHuman: 'İnsan modeli yükleniyor...',
 
     otherModels: 'Diğer Modellerimiz',
@@ -475,6 +478,7 @@ export const translations = {
 
     details: 'Détails',
 
+    loadingModel: 'Chargement du modèle 3D...',
     loadingHuman: 'Chargement de la figure humaine...',
 
     otherModels: 'Autres Modèles',
@@ -582,7 +586,8 @@ export const translations = {
 
     details: 'Dettagli',
 
-    loadingHuman: 'Caricamento della figura umana...',
+    loadingModel: 'Caricamento modello 3D...',
+    loadingHuman: 'Caricamento figura umana...',
 
     otherModels: 'Altri Modelli',
   },
@@ -689,6 +694,7 @@ export const translations = {
 
     details: 'Detalles',
 
+    loadingModel: 'Cargando modelo 3D...',
     loadingHuman: 'Cargando figura humana...',
 
     otherModels: 'Otros Modelos',
@@ -812,6 +818,7 @@ export const translations = {
 
     details: 'Details',
 
+    loadingModel: '3D-model laden...',
     loadingHuman: 'Menselijke figuur laden...',
 
     otherModels: 'Andere Modellen',
@@ -935,6 +942,7 @@ export const translations = {
 
     details: 'Szczegóły',
 
+    loadingModel: 'Ładowanie modelu 3D...',
     loadingHuman: 'Ładowanie postaci ludzkiej...',
 
     otherModels: 'Inne Modele',
@@ -1058,6 +1066,7 @@ export const translations = {
 
     details: 'Detalhes',
 
+    loadingModel: 'Carregando modelo 3D...',
     loadingHuman: 'Carregando figura humana...',
 
     otherModels: 'Outros Modelos',

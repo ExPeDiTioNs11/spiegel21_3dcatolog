@@ -49,7 +49,7 @@ const SavedDesigns = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Typography variant="h4" gutterBottom align="center" sx={{ mb: 6 }}>
-        {t('mySavedDesigns')}
+        {t('savedDesigns')}
       </Typography>
 
       {savedDesigns.length === 0 ? (
