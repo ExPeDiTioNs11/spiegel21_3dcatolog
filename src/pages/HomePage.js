@@ -30,6 +30,7 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import BluetoothIcon from '@mui/icons-material/Bluetooth';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import HandymanIcon from '@mui/icons-material/Handyman';
+import { useProducts } from '../context/ProductContext';
 
 // Feature icons mapping
 const featureIcons = {
@@ -67,37 +68,6 @@ const getSliderContent = (t) => [
   }
 ];
 
-// Products data
-const getProducts = (t) => [
-  {
-    id: 'Bolnuevo',
-    modelName: 'Bolnuevo',
-    name: 'Bolnuevo',
-    description: t('modernMirrorDesc'),
-    price: 299,
-    image: '/images/modern-mirror.jpg',
-    features: ['ledLighting', 'antiFog', 'smartSensor']
-  },
-  {
-    id: 'm01l2v',
-    modelName: 'm01l2v',
-    name: 'Classic',
-    description: t('classicMirrorDesc'),
-    price: 349,
-    image: '/images/classic-mirror.jpg',
-    features: ['ledLighting', 'antiFog', 'bluetoothSpeaker']
-  },
-  {
-    id: 'SimpleMirror',
-    modelName: 'SimpleMirror',
-    name: 'Simple',
-    description: t('simpleMirrorDesc'),
-    price: 249,
-    image: '/images/simple-mirror.jpg',
-    features: ['ledLighting', 'minimalDesign', 'easyMount']
-  }
-];
-
 const HomePage = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -108,10 +78,13 @@ const HomePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { scrollY } = useScroll();
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { getProductsByCategory } = useProducts();
 
   // Get translated content
   const sliderContent = getSliderContent(t);
-  const products = getProducts(t);
+  
+  // Ayna ürünlerini al
+  const mirrors = getProductsByCategory('mirrors');
 
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroScale = useTransform(scrollY, [0, 300], [1, 0.95]);
@@ -413,7 +386,7 @@ const HomePage = () => {
               {t('ourProducts')}
             </Typography>
             <Grid container spacing={4}>
-              {products.map((product, index) => (
+              {mirrors.map((product, index) => (
                 <Grid item xs={12} md={4} key={product.id}>
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
@@ -447,7 +420,7 @@ const HomePage = () => {
                         <CardMedia
                           component="img"
                           height={400}
-                          image={product.image}
+                          image={product.thumbnail}
                           alt={product.name}
                           loading="lazy"
                           sx={{

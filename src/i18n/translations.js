@@ -104,7 +104,7 @@ export const translations = {
 
     // Slider Content
     modernMirrorsTitle: 'Moderne Spiegel',
-    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
+    modernMirrorsDesc: 'Eleganz für Ihr Zuhause',
     smartMirrorsTitle: 'Intelligente Spiegel',
     smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
 
@@ -121,6 +121,8 @@ export const translations = {
     details: 'Details',
 
     loadingHuman: 'Menschliche Figur wird geladen...',
+
+    otherModels: 'Andere Modelle',
   },
   en: {
     // Navigation
@@ -245,6 +247,8 @@ export const translations = {
     details: 'Details',
 
     loadingHuman: 'Loading human figure...',
+
+    otherModels: 'Other Models',
   },
   tr: {
     // Navigation
@@ -365,6 +369,8 @@ export const translations = {
     details: 'Detaylar',
 
     loadingHuman: 'İnsan modeli yükleniyor...',
+
+    otherModels: 'Diğer Modellerimiz',
   },
   fr: {
     // Navigation
@@ -470,6 +476,8 @@ export const translations = {
     details: 'Détails',
 
     loadingHuman: 'Chargement de la figure humaine...',
+
+    otherModels: 'Autres Modèles',
   },
   it: {
     // Navigation
@@ -575,6 +583,8 @@ export const translations = {
     details: 'Dettagli',
 
     loadingHuman: 'Caricamento della figura umana...',
+
+    otherModels: 'Altri Modelli',
   },
   es: {
     // Navigation
@@ -680,6 +690,8 @@ export const translations = {
     details: 'Detalles',
 
     loadingHuman: 'Cargando figura humana...',
+
+    otherModels: 'Otros Modelos',
   },
   nl: {
     // Navigation
@@ -784,9 +796,9 @@ export const translations = {
 
     // Slider Content
     modernMirrorsTitle: 'Moderne Spiegel',
-    modernMirrorsDesc: 'Bringen Sie Eleganz in Ihr Zuhause',
-    smartMirrorsTitle: 'Intelligente Spiegel',
-    smartMirrorsDesc: 'Die Verbindung von Technologie und Design',
+    modernMirrorsDesc: 'Voeg elegantie toe aan uw huis',
+    smartMirrorsTitle: 'Slimme Spiegel',
+    smartMirrorsDesc: 'Waar technologie design ontmoet',
 
     // Product Features
     bluetoothSpeaker: 'Bluetooth-Lautsprecher',
@@ -801,6 +813,8 @@ export const translations = {
     details: 'Details',
 
     loadingHuman: 'Menselijke figuur laden...',
+
+    otherModels: 'Andere Modellen',
   },
   pl: {
     // Navigation
@@ -922,6 +936,8 @@ export const translations = {
     details: 'Szczegóły',
 
     loadingHuman: 'Ładowanie postaci ludzkiej...',
+
+    otherModels: 'Inne Modele',
   },
   pt: {
     // Navigation
@@ -1043,5 +1059,7 @@ export const translations = {
     details: 'Detalhes',
 
     loadingHuman: 'Carregando figura humana...',
+
+    otherModels: 'Outros Modelos',
   }
 }; 

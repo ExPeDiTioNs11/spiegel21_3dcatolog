@@ -8,6 +8,7 @@ import Header from './components/Header';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import LocationModal from './components/LocationModal';
 import { translations } from './i18n/translations';
+import { ProductProvider } from './context/ProductContext';
 
 const theme = createTheme({
   palette: {
@@ -187,9 +188,11 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <LanguageProvider>
-    <Router>
-          <AppContent />
-    </Router>
+        <ProductProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </ProductProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

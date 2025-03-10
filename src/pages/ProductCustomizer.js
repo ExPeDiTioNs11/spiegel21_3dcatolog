@@ -27,6 +27,12 @@ import {
   DialogActions,
   DialogContentText,
   Fab,
+  IconButton,
+  Card,
+  CardContent,
+  CardMedia,
+  Modal,
+  Tooltip,
 } from '@mui/material';
 import Scene from '../components/Scene';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -34,6 +40,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LoadingScreen from '../components/LoadingScreen';
 import { useLanguage } from '../i18n/LanguageContext';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useProducts } from '../context/ProductContext';
+import CloseIcon from '@mui/icons-material/Close';
 
 const steps = ['sizeSettings', 'colorSelection', 'accessories', 'summary'];
 
@@ -138,6 +147,9 @@ const ProductCustomizer = () => {
   const [showHuman, setShowHuman] = useState(false);
   const [humanGender, setHumanGender] = useState('male');
   const [humanHeight, setHumanHeight] = useState(170);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const { getProductsByCategory, getProductById } = useProducts();
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [modelSettings, setModelSettings] = useState({
     width: 100,
     height: 150,
@@ -235,10 +247,10 @@ const ProductCustomizer = () => {
     }));
   };
 
-  // Update base price to Euro
-  const basePrice = 299;
+  // Base price state'ini ekleyelim
+  const [basePrice, setBasePrice] = useState(299);
 
-  // Update price calculations
+  // Update price calculations with dynamic base price
   const calculatePriceDifference = (width, height) => {
     const standardSize = (100 * 150);
     const newSize = (width * height);
@@ -298,6 +310,238 @@ const ProductCustomizer = () => {
       setIsHumanLoading(false);
     }, 1000);
   };
+
+  // Ürün modalını açma/kapama fonksiyonları
+  const handleOpenProductModal = () => {
+    setIsProductModalOpen(true);
+  };
+
+  const handleCloseProductModal = () => {
+    setIsProductModalOpen(false);
+  };
+
+  // Ürün seçme fonksiyonu
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
+    // Stepper'ı sıfırla
+    setActiveStep(0);
+    // Kayıtlı tasarım durumunu sıfırla
+    setIsSaved(false);
+    // Model ayarlarını sıfırla
+    setModelSettings({
+      width: 100,
+      height: 150,
+      scaleX: 1.0,
+      scaleY: 1.5,
+      scaleZ: 0.1,
+      color: colors[0].id,
+    });
+    // Base price'ı yeni ürüne göre güncelle
+    setBasePrice(product.price);
+    // Loading durumunu aktifleştir
+    setIsLoading(true);
+    // Yeni ürüne yönlendir
+    navigate(`/product/${product.id}`, { replace: true });
+    handleCloseProductModal();
+    
+    // Yeni ürün yüklenme efekti
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  // Ürün modalı içeriği
+  const ProductSelectionModal = () => {
+    const mirrors = getProductsByCategory('mirrors');
+
+    return (
+      <Modal
+        open={isProductModalOpen}
+        onClose={handleCloseProductModal}
+        aria-labelledby="product-selection-modal"
+        aria-describedby="select-a-product"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '95%', sm: '85%', md: '75%' },
+          maxHeight: '85vh',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          borderRadius: 3,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          {/* Header */}
+          <Box sx={{
+            p: 3,
+            borderBottom: '1px solid rgba(0,0,0,0.1)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            bgcolor: '#008098',
+            color: 'white'
+          }}>
+            <Typography variant="h5" component="h2">
+              {t('otherModels')}
+            </Typography>
+            <IconButton onClick={handleCloseProductModal} sx={{ color: 'white' }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          {/* Content */}
+          <Box sx={{
+            p: 3,
+            overflow: 'auto',
+            flex: 1,
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: '#f1f1f1',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#008098',
+              borderRadius: '4px',
+            },
+          }}>
+            <Grid container spacing={3}>
+              {mirrors.map((product, index) => (
+                <Grid item xs={12} sm={6} md={4} key={product.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <Card 
+                      sx={{ 
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:hover': {
+                          transform: 'translateY(-8px)',
+                          boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
+                          '& .product-overlay': {
+                            opacity: 1
+                          },
+                          '& .product-details': {
+                            transform: 'translateY(0)'
+                          }
+                        }
+                      }}
+                      onClick={() => handleProductSelect(product)}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="280"
+                        image={product.thumbnail}
+                        alt={product.name}
+                        sx={{
+                          transition: 'transform 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.05)'
+                          }
+                        }}
+                      />
+                      {/* Overlay with details */}
+                      <Box className="product-overlay" sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        bgcolor: 'rgba(0,128,152,0.95)',
+                        color: 'white',
+                        p: 2,
+                        transform: 'translateY(0)',
+                        transition: 'all 0.3s ease',
+                      }}>
+                        <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+                          {product.name}
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 2, opacity: 0.9 }}>
+                          {product.description}
+                        </Typography>
+                        <Box sx={{ 
+                          display: 'flex', 
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                            {formatPrice(product.price)}
+                          </Typography>
+                          <Button 
+                            variant="contained" 
+                            size="small"
+                            sx={{
+                              bgcolor: 'white',
+                              color: '#008098',
+                              '&:hover': {
+                                bgcolor: 'rgba(255,255,255,0.9)'
+                              }
+                            }}
+                          >
+                            {t('details')}
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Card>
+                  </motion.div>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Box>
+      </Modal>
+    );
+  };
+
+  // Menü butonunu ekleyelim
+  const MenuButton = () => (
+    <Tooltip 
+      title={t('otherModels')} 
+      placement="right"
+      componentsProps={{
+        tooltip: {
+          sx: {
+            bgcolor: '#008098',
+            color: '#ffffff',
+            fontSize: '0.875rem',
+            padding: '8px 12px',
+            '& .MuiTooltip-arrow': {
+              color: '#008098'
+            }
+          }
+        }
+      }}
+    >
+      <Fab
+        size="small"
+        aria-label="menu"
+        onClick={handleOpenProductModal}
+        sx={{
+          position: 'absolute',
+          top: 20,
+          left: 20,
+          zIndex: 1000,
+          bgcolor: '#008098',
+          minHeight: '40px',
+          width: '40px',
+          height: '40px',
+          '&:hover': {
+            bgcolor: '#00907d'
+          }
+        }}
+      >
+        <MenuIcon sx={{ fontSize: '1.2rem', color: '#ffffff' }} />
+      </Fab>
+    </Tooltip>
+  );
 
   const renderStepContent = (step) => {
     const content = (() => {
@@ -678,7 +922,9 @@ const ProductCustomizer = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ position: 'relative', minHeight: '100vh' }}>
+      <MenuButton />
+      <ProductSelectionModal />
       <AnimatePresence>
         {isLoading && <LoadingScreen />}
       </AnimatePresence>
