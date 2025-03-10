@@ -158,6 +158,7 @@ const ProductCustomizer = () => {
     scaleZ: 0.1,
     color: colors[0].id,
   });
+  const [showGuideLines, setShowGuideLines] = useState(false);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -314,6 +315,7 @@ const ProductCustomizer = () => {
   // Functions for opening/closing product modal
   const handleOpenProductModal = () => {
     setIsProductModalOpen(true);
+    setShowGuideLines(false); // Close ruler when menu is opened
   };
 
   const handleCloseProductModal = () => {
@@ -986,7 +988,12 @@ const ProductCustomizer = () => {
             minHeight: isDesktop ? 'auto' : '400px'
           }}>
             <Box sx={{ height: '100%', position: 'relative' }}>
-              <Scene selectedModel={productId} modelSettings={modelSettings} />
+              <Scene 
+                selectedModel={productId} 
+                modelSettings={modelSettings}
+                showGuideLines={showGuideLines}
+                setShowGuideLines={setShowGuideLines}
+              />
             </Box>
           </Grid>
 

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, useTexture, useFBX } from "@react-three/drei";
-import { CircularProgress, Box, Alert, Button, Grid } from "@mui/material";
+import { CircularProgress, Box, Alert, Button, Grid, IconButton } from "@mui/material";
 import MeasurementRuler from "./MeasurementRuler";
 import HumanFigure from './HumanFigure';
 import HumanControls from './HumanControls';
 import GuideLines from './GuideLines';
 import { useLanguage } from '../i18n/LanguageContext';
 import * as THREE from 'three';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 
 // Table model component
 const TableModel = () => {
@@ -180,14 +181,14 @@ const Lighting = () => {
   );
 };
 
-const Scene = ({ selectedModel, modelSettings }) => {
+const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines }) => {
   const { t } = useLanguage();
   const [ModelComponent, setModelComponent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showHuman, setShowHuman] = useState(false);
+  const [showHuman, setShowHuman] = useState(true);
   const [humanHeight, setHumanHeight] = useState(170);
-  const [showGuideLines, setShowGuideLines] = useState(false);
+  const [isLightsDimmed, setIsLightsDimmed] = useState(false);
 
   // Ensure modelSettings has default values
   const defaultModelSettings = {
@@ -227,6 +228,7 @@ const Scene = ({ selectedModel, modelSettings }) => {
       }
       
       setModelComponent(() => modelComponent.default);
+      setShowGuideLines(false);
     } catch (err) {
       console.error("Error loading model:", err);
       setError(`Error loading model (${selectedModel}). Please refresh the page or select another model.`);
@@ -239,13 +241,30 @@ const Scene = ({ selectedModel, modelSettings }) => {
     loadModel();
   }, [loadModel]);
 
+  // Debug ruler state
+  useEffect(() => {
+    console.log('Ruler visibility:', showGuideLines);
+  }, [showGuideLines]);
+
   return (
     <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
       <Canvas shadows gl={{ antialias: true, alpha: false }}>
         <color attach="background" args={["#f0f0f0"]} />
         <fog attach="fog" args={["#f0f0f0", 10, 25]} />
-        <Lighting />
         <Suspense fallback={null}>
+          <ambientLight intensity={isLightsDimmed ? 0.2 : 1} />
+          <directionalLight
+            position={[5, 5, 5]}
+            intensity={isLightsDimmed ? 0.3 : 1}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-far={50}
+            shadow-camera-left={-10}
+            shadow-camera-right={10}
+            shadow-camera-top={10}
+            shadow-camera-bottom={-10}
+          />
           <PerspectiveCamera
             makeDefault
             position={[0, 1.2, 8]}
@@ -325,12 +344,38 @@ const Scene = ({ selectedModel, modelSettings }) => {
         position: 'absolute', 
         top: 20, 
         right: 20, 
-        zIndex: 10 
+        zIndex: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1
       }}>
         <MeasurementRuler
           isVisible={showGuideLines}
           onToggle={() => setShowGuideLines(!showGuideLines)}
+          className="MuiIconButton-circular"
+          sx={{
+            backgroundColor: showGuideLines ? 'primary.main' : 'background.paper',
+            color: showGuideLines ? 'white' : 'primary.main',
+            '&:hover': {
+              backgroundColor: showGuideLines ? 'primary.dark' : 'background.default',
+            },
+            boxShadow: 2
+          }}
         />
+        <IconButton
+          onClick={() => setIsLightsDimmed(!isLightsDimmed)}
+          className="MuiIconButton-circular"
+          sx={{
+            backgroundColor: isLightsDimmed ? 'primary.main' : 'background.paper',
+            color: isLightsDimmed ? 'white' : 'primary.main',
+            '&:hover': {
+              backgroundColor: isLightsDimmed ? 'primary.dark' : 'background.default',
+            },
+            boxShadow: 2
+          }}
+        >
+          <LightbulbIcon />
+        </IconButton>
       </Box>
 
       {/* Loading and error states */}

@@ -139,6 +139,14 @@ const theme = createTheme({
             backgroundColor: '#f5f5f5',
             color: 'rgba(0, 0, 0, 0.26)',
           },
+          '&.MuiIconButton-circular': {
+            borderRadius: '50%',
+            width: 40,
+            height: 40,
+            minWidth: 40,
+            minHeight: 40,
+            padding: 0,
+          }
         },
         sizeSmall: {
           padding: '6px',
