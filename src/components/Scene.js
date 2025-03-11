@@ -41,8 +41,8 @@ const TableModel = () => {
 
 // Bathroom environment component
 const BathroomEnvironment = () => {
-  const wallTexture = useTexture('public/models/roomsDesing/texture/wall1_texture.jpg');
-  const groundTexture = useTexture('public/models/roomsDesing/texture/ground1_texture.jpg');
+  const wallTexture = useTexture('/models/roomsDesing/texture/wall1_texture.jpg');
+  const groundTexture = useTexture('/models/roomsDesing/texture/ground1_texture.jpg');
   
   wallTexture.wrapS = THREE.RepeatWrapping;
   wallTexture.wrapT = THREE.RepeatWrapping;
