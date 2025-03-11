@@ -41,12 +41,7 @@ const TableModel = () => {
 
 // Bathroom environment component
 const BathroomEnvironment = () => {
-  const wallTexture = useTexture('/models/roomsDesing/texture/wall1_texture.jpg', (texture) => {
-    // Texture başarıyla yüklendiğinde
-    texture.encoding = THREE.sRGBEncoding;
-  }, (error) => {
-    console.error('Texture yüklenirken hata oluştu:', error);
-  });
+  const wallTexture = useTexture('/models/roomsDesing/texture/wall1_texture.jpg');
   const groundTexture = useTexture('/models/roomsDesing/texture/ground1_texture.jpg');
   
   wallTexture.wrapS = THREE.RepeatWrapping;
