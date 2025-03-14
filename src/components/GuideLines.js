@@ -15,13 +15,13 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
   // Adjust position based on the model's position
   const [x, y, z] = position || [0, 1.5, -2.3];
   
-  // Metre renkleri ve ayarları
-  const rulerMainColor = "#f2f2f2"; // Metre ana rengi (beyaz)
-  const rulerBorderColor = "#008098"; // Metre kenar rengi (turkuaz)
-  const rulerTickColor = "#222222"; // Metre çizgi rengi (siyah - daha koyu)
-  const rulerWidth = 0.055; // Metrenin genişliği - biraz daha kalın
+  // Meter colors and settings
+  const rulerMainColor = "#f2f2f2"; // Main color of the meter (white)
+  const rulerBorderColor = "#008098"; // Meter edge color (turquoise)
+  const rulerTickColor = "#222222"; // Meter line color (darker black)
+  const rulerWidth = 0.055; // Meter width - slightly thicker
   
-  // Kenar boşluğu - çerçevenin modelden ne kadar dışarıda olacağı
+  // Margin - how much the frame will be outside the model
   const margin = 0.05;
   
   // Metre şeritleri oluşturma fonksiyonu
@@ -32,38 +32,38 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
     
     const totalCm = isHorizontal ? modelDimensions.width : modelDimensions.height;
     
-    // Metre şerit pozisyonu - pozisyon parametresi: 0=üst, 1=sağ, 2=alt, 3=sol
+    // Ruler strip position - position parameter: 0=top, 1=right, 2=bottom, 3=left
     let stripPosition;
     if (isHorizontal) {
-      // Yatay şeritler (üst veya alt)
+      // Horizontal stripes (top or bottom)
       stripPosition = position === 0
         ? [0, (modelSettings.scaleY / 2 + rulerWidth / 2 + 0.01), 0.01]  // üst
         : [0, -(modelSettings.scaleY / 2 + rulerWidth / 2 + 0.01), 0.01]; // alt
     } else {
-      // Dikey şeritler (sol veya sağ)
+      // Vertical stripes (left or right)
       stripPosition = position === 3
         ? [-(modelSettings.scaleX / 2 + rulerWidth / 2 + 0.01), 0, 0.01]  // sol
         : [(modelSettings.scaleX / 2 + rulerWidth / 2 + 0.01), 0, 0.01];  // sağ
     }
     
-    // Metre geometrisini döndürme
+    // Rotate the meter geometry
     const stripRotation = isHorizontal 
       ? [0, 0, 0] 
       : [0, 0, Math.PI / 2];
     
-    // Metre şerit boyutları
+    // Ruler strip dimensions
     const stripDimensions = isHorizontal
       ? [rulerLength, rulerWidth, 0.005]
       : [rulerLength, rulerWidth, 0.005];
     
-    // HTML olarak cetveli oluştur
+    // Create the ruler as HTML
     return (
       <group 
         key={`ruler-${isHorizontal ? 'h' : 'v'}-${position}`}
         position={stripPosition}
         rotation={stripRotation}
       >
-        {/* Metre ana şeridi */}
+        {/* Main ruler strip */}
         <mesh>
           <planeGeometry args={[stripDimensions[0], stripDimensions[1]]} />
           <meshBasicMaterial 
@@ -72,7 +72,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
           />
         </mesh>
         
-        {/* Metre kenar şeridi */}
+        {/* Meter edge strip */}
         <mesh position={[0, 0, 0.001]}>
           <planeGeometry args={[stripDimensions[0], stripDimensions[1]]} />
           <meshBasicMaterial 
@@ -88,13 +88,13 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
     );
   };
   
-  // Metre dokusu oluşturma fonksiyonu
+  // Function to create ruler texture
   const createRulerTexture = (isHorizontal, totalCm, width, height, position) => {
     const canvas = document.createElement('canvas');
     
-    // Canvas boyutları
-    const canvasWidth = isHorizontal ? 2048 : 256;  // Daha yüksek çözünürlük
-    const canvasHeight = isHorizontal ? 256 : 2048; // Daha yüksek çözünürlük
+    // Canvas dimensions
+    const canvasWidth = isHorizontal ? 2048 : 256;  // Higher resolution
+    const canvasHeight = isHorizontal ? 256 : 2048; // Higher resolution
     
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -105,7 +105,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
     context.fillStyle = 'rgba(255, 255, 255, 0.1)';
     context.fillRect(0, 0, canvasWidth, canvasHeight);
     
-    // Cetvel başlık alanı
+    // Ruler header area
     const headerHeight = isHorizontal ? canvasHeight * 0.3 : canvasWidth * 0.3;
     context.fillStyle = rulerBorderColor;
     context.globalAlpha = 0.1;
@@ -116,19 +116,19 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
     }
     context.globalAlpha = 1.0;
     
-    // Cetveli çizme
+    // Draw the ruler
     const pixelsPerCm = isHorizontal 
       ? canvasWidth / totalCm 
       : canvasHeight / totalCm;
     
-    // Çizgileri çizme
+    // Draw the lines
     context.strokeStyle = rulerTickColor;
     
-    // Sayılar için büyük font
+    // Font for numbers
     const fontSize = 24;
     const fontFamily = 'Arial, sans-serif';
     
-    // Her mm için çizgiler (daha detaylı)
+    // Draw the lines for each mm (more detailed)
     const mmPerCm = 10;
     for (let mm = 0; mm <= totalCm * mmPerCm; mm++) {
       const pos = mm * (pixelsPerCm / mmPerCm);
@@ -136,11 +136,11 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
       const isMajorCm = mm % (mmPerCm * 10) === 0;
       const isMidCm = mm % (mmPerCm * 5) === 0 && !isMajorCm;
       
-      // Çizgi kalınlığı ayarları
+      // Line thickness settings
       context.lineWidth = isMajorCm ? 3 : (isMidCm ? 2 : (isCm ? 1.5 : 0.8));
       
       if (isHorizontal) {
-        // Yatay cetvele dikey çizgiler
+        // Horizontal ruler - vertical lines
         const tickHeight = isMajorCm 
           ? canvasHeight * 0.7 
           : (isMidCm ? canvasHeight * 0.5 : (isCm ? canvasHeight * 0.4 : canvasHeight * 0.25));
@@ -150,14 +150,14 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
         context.lineTo(pos, canvasHeight);
         context.stroke();
         
-        // Her 10 cm'de sayıları yazma - daha belirgin font
+        // Write numbers every 10 cm - more prominent font
         if (isMajorCm) {
           const cmValue = mm / mmPerCm;
           context.fillStyle = "#000000";
           context.font = `bold ${fontSize}px ${fontFamily}`;
           context.textAlign = 'center';
           
-          // Sayılar için arka plan dikdörtgeni
+          // Background rectangle for numbers
           const textWidth = context.measureText(cmValue).width;
           context.fillStyle = 'rgba(255, 255, 255, 0.8)';
           context.fillRect(
@@ -167,7 +167,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
             fontSize + 4
           );
           
-          // Sayıyı yaz
+          // Write the number
           context.fillStyle = "#000000";
           context.fillText(
             `${cmValue}`, 
@@ -176,8 +176,8 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
           );
         }
       } else {
-        // Dikey cetvele yatay çizgiler
-        const isRightSide = position === 1; // Sağ taraf için ters çevir
+        // Vertical ruler - horizontal lines
+        const isRightSide = position === 1; // For the right side, reverse the direction
         
         const tickWidth = isMajorCm 
           ? canvasWidth * 0.7 
@@ -191,14 +191,14 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
         context.lineTo(endX, pos);
         context.stroke();
         
-        // Her 10 cm'de sayıları yazma
+        // Write numbers every 10 cm
         if (isMajorCm) {
           const cmValue = mm / mmPerCm;
           context.fillStyle = "#000000";
           context.font = `bold ${fontSize}px ${fontFamily}`;
           context.textAlign = isRightSide ? 'left' : 'right';
           
-          // Sayılar için arka plan
+          // Background rectangle for numbers
           const textWidth = context.measureText(cmValue).width;
           const textX = isRightSide 
             ? tickWidth + 4 
@@ -212,7 +212,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
             fontSize + 4
           );
           
-          // Sayıyı yaz
+          // Write the number
           context.fillStyle = "#000000";
           context.fillText(
             `${cmValue}`, 
@@ -223,16 +223,16 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
       }
     }
     
-    // Ek detaylar - köşe işaretleri
+    // Additional details - corner markers
     const cornerSize = 20;
     context.fillStyle = rulerBorderColor;
     
     if (isHorizontal) {
-      // Yatay şerit için köşe işaretleri
+      // Horizontal ruler - corner markers
       context.fillRect(0, canvasHeight - cornerSize, cornerSize, cornerSize);
       context.fillRect(canvasWidth - cornerSize, canvasHeight - cornerSize, cornerSize, cornerSize);
     } else {
-      // Dikey şerit için köşe işaretleri
+      // Vertical ruler - corner markers
       const isRightSide = position === 1;
       if (isRightSide) {
         context.fillRect(0, 0, cornerSize, cornerSize);
@@ -243,7 +243,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
       }
     }
     
-    // Canvas'ı dokuya çevirme
+    // Convert the canvas to a texture
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
     
@@ -252,7 +252,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
 
   return (
     <group position={[x, y, z]}>
-      {/* Ana çerçeve - Üst ve Alt yatay çizgiler */}
+      {/* Main frame - Top and bottom horizontal lines */}
       <mesh position={[0, modelSettings.scaleY/2, 0]}>
         <boxGeometry args={[modelSettings.scaleX + margin * 2, 0.0025, 0.0025]} />
         <meshBasicMaterial color={rulerBorderColor} transparent opacity={0.7} />
@@ -262,7 +262,7 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
         <meshBasicMaterial color={rulerBorderColor} transparent opacity={0.7} />
       </mesh>
       
-      {/* Ana çerçeve - Sol ve Sağ dikey çizgiler */}
+      {/* Main frame - Left and right vertical lines */}
       <mesh position={[modelSettings.scaleX/2, 0, 0]}>
         <boxGeometry args={[0.0025, modelSettings.scaleY + margin * 2, 0.0025]} />
         <meshBasicMaterial color={rulerBorderColor} transparent opacity={0.7} />
@@ -272,16 +272,16 @@ export default function GuideLines({ modelSettings, selectedModel, position }) {
         <meshBasicMaterial color={rulerBorderColor} transparent opacity={0.7} />
       </mesh>
 
-      {/* Üst yatay metre şeridi */}
+      {/* Top horizontal ruler strip */}
       {createRulerStrip(0, true)}
       
-      {/* Alt yatay metre şeridi */}
+      {/* Bottom horizontal ruler strip */}
       {createRulerStrip(2, true)}
       
-      {/* Sol dikey metre şeridi */}
+      {/* Left vertical ruler strip */}
       {createRulerStrip(3, false)}
       
-      {/* Sağ dikey metre şeridi */}
+      {/* Right vertical ruler strip */}
       {createRulerStrip(1, false)}
 
       {/* Total width label */}
