@@ -197,6 +197,28 @@ const ProductCustomizer = () => {
           setModelSettings(design);
           setIsSaved(true);
           setActiveStep(steps.length - 1);
+        } else {
+          // Fetch product data and initialize
+          const product = getProductById(productId);
+          if (product) {
+            setSelectedProduct(product);
+            setBasePrice(product.price);
+            
+            // Initialize with default dimensions if available
+            if (product.defaultDimensions) {
+              const { width, height } = product.defaultDimensions;
+              setModelSettings({
+                width,
+                height,
+                scaleX: width / 100,
+                scaleY: height / 100,
+                scaleZ: 0.1,
+                color: colors[0].id,
+              });
+            }
+          } else {
+            throw new Error('Product not found');
+          }
         }
         // Simulate loading time for 3D model
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -331,15 +353,21 @@ const ProductCustomizer = () => {
     setActiveStep(0);
     // Reset saved design state
     setIsSaved(false);
-    // Reset model settings
+    
+    // Get default dimensions for the product
+    const defaultWidth = product.defaultDimensions?.width || 100;
+    const defaultHeight = product.defaultDimensions?.height || 150;
+    
+    // Reset model settings with product's default dimensions if available
     setModelSettings({
-      width: 100,
-      height: 150,
-      scaleX: 1.0,
-      scaleY: 1.5,
+      width: defaultWidth,
+      height: defaultHeight,
+      scaleX: defaultWidth / 100,
+      scaleY: defaultHeight / 100,
       scaleZ: 0.1,
       color: colors[0].id,
     });
+    
     // Update base price for new product
     setBasePrice(product.price);
     // Activate loading state

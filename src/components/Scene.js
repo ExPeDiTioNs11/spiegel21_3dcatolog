@@ -50,7 +50,7 @@ const BathroomEnvironment = () => {
 
   groundTexture.wrapS = THREE.RepeatWrapping;
   groundTexture.wrapT = THREE.RepeatWrapping;
-  groundTexture.repeat.set(4, 2); // Zeminde daha fazla tekrar için
+  groundTexture.repeat.set(4, 2); // more repeat for the ground
 
   return (
     <group>
@@ -252,10 +252,21 @@ const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines
         <color attach="background" args={["#f0f0f0"]} />
         <fog attach="fog" args={["#f0f0f0", 10, 25]} />
         <Suspense fallback={null}>
-          <ambientLight intensity={isLightsDimmed ? 0.2 : 1} />
+          {/* Ortam ışığı - daha sıcak ton */}
+          <ambientLight intensity={isLightsDimmed ? 0.08 : 0.5} color="#ffe0c0" />
+          
+          {/* Gökyüzü ve yerden gelen doğal ışık */}
+          <hemisphereLight 
+            skyColor="#b1e1ff" 
+            groundColor="#ffe0bd" 
+            intensity={isLightsDimmed ? 0.04 : 0.3} 
+          />
+          
+          {/* Ana yönlü ışık - daha sıcak bir ton ile */}
           <directionalLight
             position={[5, 5, 5]}
-            intensity={isLightsDimmed ? 0.3 : 1}
+            intensity={isLightsDimmed ? 0.1 : 0.5}
+            color="#fff5e8"
             castShadow
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
@@ -265,6 +276,15 @@ const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines
             shadow-camera-top={10}
             shadow-camera-bottom={-10}
           />
+          
+          {/* Karşı taraftan dolgu ışığı - doğal ışık dengesini iyileştirir */}
+          <directionalLight
+            position={[-3, 3, -2]}
+            intensity={isLightsDimmed ? 0.05 : 0.2}
+            color="#e0f0ff"
+            castShadow={false}
+          />
+          
           <PerspectiveCamera
             makeDefault
             position={[0, 1.2, 8]}
@@ -288,6 +308,7 @@ const Scene = ({ selectedModel, modelSettings, showGuideLines, setShowGuideLines
                 castShadow
                 material-metalness={0.9}
                 material-roughness={0.1}
+                isLightsDimmed={isLightsDimmed}
               />
             )}
             {showHuman && (

@@ -10,7 +10,11 @@ const initialProducts = {
             description: 'Modern designed elegant mirror',
             price: 299,
             thumbnail: '/images/Bolnuevo.jpg',
-            features: ['ledLighting', 'antiFog', 'smartSensor']
+            features: ['ledLighting', 'antiFog', 'smartSensor'],
+            defaultDimensions: {
+                width: 200,
+                height: 130
+            }
         },
         {
             id: 'm01l2v',
@@ -99,7 +103,7 @@ export const ProductProvider = ({ children }) => {
 // Custom hook for using the product context
 export const useProducts = () => {
     const context = useContext(ProductContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error('useProducts must be used within a ProductProvider');
     }
     return context;
